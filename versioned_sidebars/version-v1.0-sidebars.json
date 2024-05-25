@@ -1,0 +1,11 @@
+{
+  "tutorialSidebar": [
+    {
+      "type": "category",
+      "label": "Getting Started",
+      "items": [
+        "getting-started/getting-started"
+      ]
+    }
+  ]
+}
