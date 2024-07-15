@@ -9,6 +9,10 @@ Amazon ECR requires repositories to pre-exist before pushing container images. T
 
 Refer to [AWS official documentation](https://aws.amazon.com/blogs/containers/dynamically-create-repositories-upon-image-push-to-amazon-ecr/), but with bug fixes.
 
+Pre-requisites:
+- [terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
 ### 1. Clone the Repository
 
 ```sh
@@ -18,6 +22,7 @@ git clone https://github.com/cloudpilot-ai/amazon-ecr-dynamic-repository-creatio
 ### 2. Initialize the Environment
 
 ```sh
+cd amazon-ecr-dynamic-repository-creation
 terraform init
 terraform apply --auto-approve
 ```
