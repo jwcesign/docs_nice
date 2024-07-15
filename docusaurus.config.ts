@@ -64,7 +64,7 @@ const config: Config = {
           position: 'left',
           label: 'Doc',
         },
-        {to: 'blog', label: 'Changelog', position: 'left'},
+        {to: 'blog', label: 'Blog', position: 'left'},
         {
           type: 'docsVersionDropdown',
           position: 'right',
