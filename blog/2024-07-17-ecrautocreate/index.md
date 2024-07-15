@@ -19,7 +19,7 @@ git clone https://github.com/cloudpilot-ai/amazon-ecr-dynamic-repository-creatio
 
 ```sh
 terraform init
-terraform apply -auto-approve
+terraform apply --auto-approve
 ```
 
 ### 3. Create a CloudTrail Trail
