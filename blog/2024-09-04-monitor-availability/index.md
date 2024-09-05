@@ -1,5 +1,5 @@
 ---
-slug: devops
+slug: monitoringservice
 title: Monitoring Web Service Availability
 authors: [francis-jjk]
 tags: [Kubernetes, EKS]
