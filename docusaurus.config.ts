@@ -36,11 +36,13 @@ const config: Config = {
         docs: {
           routeBasePath: '/',
           sidebarPath: './sidebars.ts',
+          lastVersion: 'current',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           // editUrl:
           //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -49,6 +51,38 @@ const config: Config = {
   ],
 
   themeConfig: {
+    algolia: {
+      // The application ID provided by Algolia
+      appId: 'DLYS8CWYIF',
+
+      // Public API key: it is safe to commit it
+      apiKey: '42d9ff986d46911fbcded1efd8c6721d',
+
+      indexName: 'CloudPilot AI',
+
+      // Optional: see doc section below
+      contextualSearch: true,
+
+      // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+      externalUrlRegex: 'external\\.com|domain\\.com',
+
+      // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+      replaceSearchResultPathname: {
+        from: '/docs/', // or as RegExp: /\/docs\//
+        to: '/',
+      },
+
+      // Optional: Algolia search parameters
+      searchParameters: {},
+
+      // Optional: path for search page that enabled by default (`false` to disable it)
+      searchPagePath: 'search',
+
+      // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
+      insights: false,
+
+      //... other Algolia params
+    },
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
@@ -56,24 +90,40 @@ const config: Config = {
       logo: {
         alt: 'CloudPilot AI Logo',
         src: 'img/logo.svg',
+        href: 'https://cloudpilot.ai',
       },
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Doc',
+          label: 'Docs',
         },
-        {to: 'blog', label: 'Blog', position: 'left'},
         {
-          type: 'docsVersionDropdown',
+          to: 'changelog',
+          label: 'Changelog',
+          position: 'left',
+        },
+        {
+          to: 'casestudies',
+          label: 'Case studies',
+          position: 'left',
+        },
+        {
+          to: 'api',
+          label: 'API',
+          position: 'left',
+        },
+        {
+          to: 'https://www.cloudpilot.ai/pricing',
+          label: 'Pricing',
           position: 'right',
         },
         {
-          href: 'https://console.cloudpilot.ai',
-          label: 'Console',
+          to: 'https://console.cloudpilot.ai',
+          label: 'Sign Up',
           position: 'right',
-        },
+        }
       ],
     },
     footer: {
@@ -83,8 +133,12 @@ const config: Config = {
     },
     prism: {
       theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      darkTheme: prismThemes.github,
     },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+    }
   } satisfies Preset.ThemeConfig,
 };
 

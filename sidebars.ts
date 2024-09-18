@@ -16,8 +16,41 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Getting Started',
-      items: ['getting-started/getting-started'],
+      link: {type: 'doc', id: 'getting-started/introduction'},
+      items: [
+        'getting-started/introduction',
+        'getting-started/getting-started',
+      ],
     },
+    {
+      type: 'category',
+      label: 'Product Changelog',
+      items: [
+        'changelog/changelog',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Case Studies',
+      link: {type: 'doc', id: 'casestudies/index'},
+      items: [
+      ],
+    },
+    {
+      type: 'category',
+      label: 'API',
+      link: {type: 'doc', id: 'api/index'},
+      items: [
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Tips',
+      items: [
+        'tips/ecr_auto_create',
+        'tips/monitor_availability',
+      ],
+    }
   ],
 };
 

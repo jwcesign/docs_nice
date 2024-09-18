@@ -1,6 +1,5 @@
 ---
-slug: /
-title: Install CloudPilot AI
+title: Quickstart
 ---
 
 import addClusterS1 from './img/add-cluster-s1.png';
@@ -9,9 +8,15 @@ import addController from './img/add-controller.png';
 import rebalances1 from './img/rebalance-s1.png';
 import rebalances2 from './img/rebalance-s2.png';
 
-#### 1. Connect a Cluster to CloudPilot AI
+### Step 1. Create a EKS cluster
 
-After logging in, click on `Add Cluster` and execute the provided shell script in your terminal.
+Now, **CloudPilot AI** only supports EKS clusters, other cloud providers will be supported soon. If you already have a cluster, please skip this step.
+
+You can refer to the doc [Demostration Cluster for CloudPilot AI](https://github.com/cloudpilot-ai/examples/tree/main/clusters/eks) to create an EKS cluster easily.
+
+### Step 2. Connect a Cluster to CloudPilot AI
+
+After logging in to [CloudPilot AI console](https://console.cloudpilot.ai), click on `Add Cluster` and execute the provided shell script in your terminal.
 
 <p align="center" width="100%">
     <img src={addClusterS1} width="50%" align="center"/>
@@ -20,7 +25,7 @@ After logging in, click on `Add Cluster` and execute the provided shell script i
 
 Once the shell script has run, click the `I ran the script` button. You will then see your potential savings with CloudPilot AI in the `Cost overview`.
 
-#### 2. Install CloudPilot AI Optimization Components
+### Step 3. Install CloudPilot AI Optimization Components
 
 After connecting your cluster to CloudPilot AI, you can begin installing the optimization components by executing the provided shell script.
 
@@ -30,7 +35,7 @@ After connecting your cluster to CloudPilot AI, you can begin installing the opt
 
 Once the shell script has run, click the `I ran the script` button. You will be redirected to the rebalance page.
 
-#### 3. Rebalance your cluster
+### Step 4. Rebalance your cluster
 
 Now, you can start rebalancing your clusters. This process will be done in three steps:
 1. Launch the new replacement nodes.
