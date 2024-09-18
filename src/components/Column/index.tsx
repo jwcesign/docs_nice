@@ -13,8 +13,7 @@ interface ColumnProps {
 // Style only affects the element inside the column, but we could have also made the same distinction as for the classes.
 export default function Column({ children, className, style }: ColumnProps) {
   return (
-  
-      <div className={clsx('col', className)} style={style}>
+      <div className={clsx('col', className)} style={{marginTop: '20px'}}>
         {children}
       </div>
   

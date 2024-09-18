@@ -54,4 +54,5 @@ const CardBody: React.FC<CardBodyProps> = ({
     </div>
   );
 };
+
 export default CardBody;
