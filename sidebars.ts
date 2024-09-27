@@ -49,6 +49,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'tips/ecr_auto_create',
         'tips/monitor_availability',
+        'tips/aws_alb_best_practice',
       ],
     }
   ],
