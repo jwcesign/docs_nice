@@ -16,8 +16,6 @@ As you can see, during this process, if any new requests arrive at the pod durin
 
 The key point here is that the TERM signal should only be sent after the pod's IP has been removed from the ALB.
 
-Here, we give you a solution, maybe it's not the best way, but it's a good practice.
-
 We propose a solution that may not be perfect, but it's a good practice. By using a [preStop lifecycle hook](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks) in the deployment, the TERM signal will be delayed by 5 seconds, allowing the **Time Point 2/3** operations to complete.
 ```yaml
 apiVersion: apps/v1
