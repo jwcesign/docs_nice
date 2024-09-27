@@ -6,17 +6,18 @@ In an AWS EKS environment, using an ALB may lead to service downtime. The issue 
 
 ![problem-img](./img/alb_time_logic.png)
 
-**Time point 1:** When Kubernetes decides to remove a pod, it sends a TERM signal to the pod. The program either stops immediately or after completing all inflight requests. The pod's status is then marked as `Terminating`.
+**Time Point 1:** When Kubernetes decides to terminate a pod, it sends a `TERM` signal. The pod may stop immediately or after completing all inflight requests, at which point its status is marked as `Terminating`.
 
-**Time poinr 2.** The ALB controller find the pod's status is terminating and try to remove the pod's IP from the ALB.
+**Time Point 2:** The ALB (Application Load Balancer) controller detects that the pod's status is Terminating and attempts to remove the pod's IP from the ALB.
 
-**Time point 3.** The ALB controller calls the relevant API to remove the pod's IP from the ALB.
+**Time Point 3:** The ALB controller calls the appropriate API to remove the pod's IP from the ALB.
 
-As you can see, during this process, if any new requests arrive at the pod during Time Period 4, they will fail. This is a common issue, as described in this [GitHub issue](https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/2366).
+During this process, if any new requests arrive at the pod during Time Period 4, those requests will fail. This is a common issue, as highlighted in a related [GitHub issue](https://github.com/kubernetes-sigs/aws-load-balancer-controller/issues/2366).
 
-The key point here is that the TERM signal should only be sent after the pod's IP has been removed from the ALB.
+Key Insight: The `TERM` signal should only be sent after the pod's IP has been removed from the ALB.
 
-We propose a solution that may not be perfect, but it's a good practice. By using a [preStop lifecycle hook](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks) in the deployment, the TERM signal will be delayed by 5 seconds, allowing the **Time Point 2/3** operations to complete.
+Proposed Solution: While this solution may not be perfect, it is a recommended practice. By using a [preStop lifecycle hook](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks) in the deployment, the TERM signal can be delayed by 5 seconds, allowing sufficient time for the operations at **Time Points 2 and 3** to complete.
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
