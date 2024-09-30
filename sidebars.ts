@@ -20,6 +20,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'getting-started/introduction',
         'getting-started/getting-started',
+        'getting-started/permissions-required',
       ],
     },
     {
