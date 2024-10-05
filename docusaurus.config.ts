@@ -39,8 +39,9 @@ const config: Config = {
           lastVersion: 'current',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl: function ({ locale, docPath }) {
+            return `https://github.com/cloudpilot-ai/docs/edit/main/docs/${docPath}`;
+          },
         },
         blog: false,
         theme: {
