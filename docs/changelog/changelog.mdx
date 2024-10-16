@@ -2,7 +2,26 @@
 title:  Changelog
 ---
 
-## October 2024 - V1.7.0 Comming Soon
+## November 2024 - V1.8.0 Comming Soon 
 
-### Feature
-- Add support for aliyun cloud.
+### Feature:
+- Add support for alibaba cloud.
+
+
+## October 2024 - V1.7.0
+
+✨✨✨ We are pleased to announce the release of CloudPilot AI version 1.7.0. We invite you to experience the new features and enhancements. If you alreay install CloudPilot AI, go to our dashboard to upgrade to the latest version.
+
+### 🚀 New Features
+- **Control Minimum Spot Nodes**: Utilize the label `workload.cloudpilot.ai/spot-min-nodes` to specify the minimum number of spot nodes for pod scheduling within a deployment. This is optional and aims to prevent pods from becoming overly concentrated on a single spot node, with a default setting of 2 and a minimum value of 1.
+- **Immediate Node Template Changes**: Experience the benefits of immediate effects upon making changes to node templates, streamlining the optimization process.
+
+### ⚙️ Enhancements
+- **Error Reporting**: CloudPilot AI now displays corresponding errors when it is unable to calculate optimization results, providing clearer feedback on process interruptions.
+- **Automatic Target Optimization Node Architecture Configuration**: Enjoy the new feature that automatically configures the architecture of your target optimization node instances.
+- **Manual Node Architecture Configuration**: Added support for manual configuration of target node instance architectures on the node template page, giving you more control over your setup.
+
+### 🛠️ Bug Fixes
+- **Correct Instance Type Creation**: Ensure that the creation of GPU nodes is properly configured to prevent accidental provisioning when users require only CPU nodes.
+
+We hope these updates contribute to a more efficient and user-friendly experience with CloudPilot AI. Please feel free to reach out through our [Slack channel](https://app.slack.com/client/T073TAAS5FW/C073J7ECB9C) if you have any questions or need assistance.
