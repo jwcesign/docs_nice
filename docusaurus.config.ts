@@ -116,6 +116,25 @@ const config: Config = {
           position: 'left',
         },
         {
+          // to: 'karpenter',
+          label: 'Karpenter',
+          position: 'left',
+          items: [
+            {
+              to: 'karpenter/aws',
+              label: 'Karpenter AWS',
+            },
+            {
+              to: 'karpenter/gcp',
+              label: 'Karpenter GCP',
+            },
+            {
+              to: 'karpenter/azure',
+              label: 'Karpenter Azure',
+            }
+          ]
+        },
+        {
           to: 'https://www.cloudpilot.ai/pricing',
           label: 'Pricing',
           position: 'right',

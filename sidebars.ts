@@ -52,6 +52,15 @@ const sidebars: SidebarsConfig = {
         'tips/monitor_availability',
         'tips/aws_alb_best_practice',
       ],
+    },
+    {
+      type: 'category',
+      label: 'Karpenter',
+      items: [
+        'karpenter/aws',
+        'karpenter/gcp',
+        'karpenter/azure',
+      ],
     }
   ],
 };
