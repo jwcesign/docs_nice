@@ -96,42 +96,42 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
           label: 'Docs',
         },
         {
-          to: 'changelog',
+          type: 'docSidebar',
+          sidebarId: 'changelogSidebar',
           label: 'Changelog',
           position: 'left',
         },
         {
-          to: 'casestudies',
-          label: 'Case studies',
-          position: 'left',
-        },
-        {
           to: 'api',
+          sidebarId: 'apiSidebar',
           label: 'API',
           position: 'left',
         },
         {
-          // to: 'karpenter',
-          label: 'Karpenter',
+          label: 'Karpenter GCP',
           position: 'left',
           items: [
             {
-              to: 'karpenter/aws',
-              label: 'Karpenter AWS',
+              type: 'docSidebar',
+              label: '0.1.0',
+              sidebarId: 'karpeneterGcp_0.1.0_Sidebar'
             },
+          ]
+        },
+        {
+          label: 'Karpenter Alibaba Cloud',
+          position: 'left',
+          items: [
             {
-              to: 'karpenter/gcp',
-              label: 'Karpenter GCP',
+              type: 'docSidebar',
+              label: '0.1.0',
+              sidebarId: 'karpeneterAlicloud_0.1.0_Sidebar'
             },
-            {
-              to: 'karpenter/azure',
-              label: 'Karpenter Azure',
-            }
           ]
         },
         {

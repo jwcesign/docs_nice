@@ -1,4 +1,4 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 /**
  * Creating a sidebar enables you to:
@@ -12,36 +12,15 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
  */
 const sidebars: SidebarsConfig = {
   // But you can create a sidebar manually
-  tutorialSidebar: [
+  docsSidebar: [
     {
       type: 'category',
       label: 'Getting Started',
-      link: {type: 'doc', id: 'getting-started/introduction'},
+      link: { type: 'doc', id: 'getting-started/introduction' },
       items: [
         'getting-started/introduction',
         'getting-started/getting-started',
         'getting-started/permissions-required',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Product Changelog',
-      items: [
-        'changelog/changelog',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Case Studies',
-      link: {type: 'doc', id: 'casestudies/index'},
-      items: [
-      ],
-    },
-    {
-      type: 'category',
-      label: 'API',
-      link: {type: 'doc', id: 'api/index'},
-      items: [
       ],
     },
     {
@@ -53,15 +32,55 @@ const sidebars: SidebarsConfig = {
         'tips/aws_alb_best_practice',
       ],
     },
+  ],
+  changelogSidebar: [
     {
       type: 'category',
-      label: 'Karpenter',
+      label: 'Product Changelog',
       items: [
-        'karpenter/aws',
-        'karpenter/gcp',
-        'karpenter/azure',
+        'changelog/1.8.0',
+        'changelog/1.7.0',
+      ]
+    },
+  ],
+  apiSidebar: [
+    {
+      type: 'category',
+      label: 'API',
+      link: { type: 'doc', id: 'api/index' },
+      items: [
       ],
-    }
+    },
+  ],
+  ['karpeneterGcp_0.1.0_Sidebar']: [
+    {
+      type: 'category',
+      label: 'Karpenter GCP Provider',
+      items: [
+        'karpenter/gcp/0.1.0/gcp',
+      ],
+    },
+    // {
+    //   type: 'category',
+    //   label: 'Tips',
+    //   items: [
+    //   ],
+    // }
+  ],
+  ['karpeneterAlicloud_0.1.0_Sidebar']: [
+    {
+      type: 'category',
+      label: 'Karpenter Alibaba Cloud Provider',
+      items: [
+        'karpenter/alicloud/0.1.0/alicloud',
+      ],
+    },
+    // {
+    //   type: 'category',
+    //   label: 'Tips',
+    //   items: [
+    //   ],
+    // }
   ],
 };
 
