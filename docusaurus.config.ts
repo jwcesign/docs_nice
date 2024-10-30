@@ -96,24 +96,59 @@ const config: Config = {
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'docsSidebar',
           position: 'left',
           label: 'Docs',
         },
         {
-          to: 'changelog',
+          type: 'docSidebar',
+          sidebarId: 'changelogSidebar',
           label: 'Changelog',
           position: 'left',
         },
         {
-          to: 'casestudies',
-          label: 'Case studies',
-          position: 'left',
-        },
-        {
           to: 'api',
+          sidebarId: 'apiSidebar',
           label: 'API',
           position: 'left',
+        },
+        /* Navbar Item "Karpenter GCP" */
+        // {
+        //   label: 'Karpenter GCP',
+        //   position: 'left',
+        //   items: [
+        //     /**
+        //      * The dropdown item list.
+        //      *
+        //      * The "type" should be "docSidebar", link to a collection of documents.
+        //      * The "label" is the text of the dropdown item.
+        //      * The "sidebarId" matches the id of the sidebar in the sidebars.ts file.
+        //      */
+        //     {
+        //       type: 'docSidebar',
+        //       label: '0.1.0',
+        //       sidebarId: 'karpeneterGcp_0.1.0_Sidebar'
+        //     },
+        //   ]
+        // },
+        /* Navbar Item "Alibaba Cloud" */
+        {
+          label: 'Karpenter Alibaba Cloud',
+          position: 'left',
+          items: [
+            /**
+             * The dropdown item list.
+             *
+             * The "type" should be "docSidebar", link to a collection of documents.
+             * The "label" is the text of the dropdown item.
+             * The "sidebarId" matches the id of the sidebar in the sidebars.ts file.
+             */
+            {
+              type: 'docSidebar',
+              label: 'Preview',
+              sidebarId: 'karpeneterAlicloud_preview_Sidebar'
+            },
+          ]
         },
         {
           to: 'https://www.cloudpilot.ai/pricing',
