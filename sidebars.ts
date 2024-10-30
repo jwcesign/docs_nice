@@ -33,6 +33,10 @@ const sidebars: SidebarsConfig = {
       ],
     },
   ],
+  /**
+   * For every product version, we create a new file in the "changelog" directory,
+   * and add it to the "items" below
+   */
   changelogSidebar: [
     {
       type: 'category',
@@ -52,12 +56,28 @@ const sidebars: SidebarsConfig = {
       ],
     },
   ],
+
+  /** For every version for each providers, we need to create a new sidebar definition. */
+
+  // The collection of "Karpenter GCP - 0.1.0" documents.
   ['karpeneterGcp_0.1.0_Sidebar']: [
+    /* We can add a new document to the "Karpenter GCP - 0.1.0" version. */
+    // 'karpenter/gcp/0.1.0/getting-started',
+
+    /** We can also add an accordion using "type" category */
     {
       type: 'category',
       label: 'Karpenter GCP Provider',
+      /**
+       * The collection of documents belonging to the "Karpenter GCP - 0.1.0" version.
+       *
+       * We use "karpeneter/gcp/[version]/[filename].mdx" name convention to store multiple
+       * versions of documents in different directories.
+       *
+       * After add a new document, you need to add it to the below "items" list.
+       */
       items: [
-        'karpenter/gcp/0.1.0/gcp',
+        'karpenter/gcp/0.1.0/getting-started',
       ],
     },
     // {
@@ -67,12 +87,14 @@ const sidebars: SidebarsConfig = {
     //   ],
     // }
   ],
+
+  // The collection of "Karpenter Alibaba Cloud - 0.1.0" documents.
   ['karpeneterAlicloud_0.1.0_Sidebar']: [
     {
       type: 'category',
       label: 'Karpenter Alibaba Cloud Provider',
       items: [
-        'karpenter/alicloud/0.1.0/alicloud',
+        'karpenter/alicloud/0.1.0/getting-started',
       ],
     },
     // {
