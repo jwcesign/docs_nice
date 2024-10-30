@@ -113,24 +113,24 @@ const config: Config = {
           position: 'left',
         },
         /* Navbar Item "Karpenter GCP" */
-        {
-          label: 'Karpenter GCP',
-          position: 'left',
-          items: [
-            /**
-             * The dropdown item list.
-             *
-             * The "type" should be "docSidebar", link to a collection of documents.
-             * The "label" is the text of the dropdown item.
-             * The "sidebarId" matches the id of the sidebar in the sidebars.ts file.
-             */
-            {
-              type: 'docSidebar',
-              label: '0.1.0',
-              sidebarId: 'karpeneterGcp_0.1.0_Sidebar'
-            },
-          ]
-        },
+        // {
+        //   label: 'Karpenter GCP',
+        //   position: 'left',
+        //   items: [
+        //     /**
+        //      * The dropdown item list.
+        //      *
+        //      * The "type" should be "docSidebar", link to a collection of documents.
+        //      * The "label" is the text of the dropdown item.
+        //      * The "sidebarId" matches the id of the sidebar in the sidebars.ts file.
+        //      */
+        //     {
+        //       type: 'docSidebar',
+        //       label: '0.1.0',
+        //       sidebarId: 'karpeneterGcp_0.1.0_Sidebar'
+        //     },
+        //   ]
+        // },
         /* Navbar Item "Alibaba Cloud" */
         {
           label: 'Karpenter Alibaba Cloud',
@@ -145,8 +145,8 @@ const config: Config = {
              */
             {
               type: 'docSidebar',
-              label: '0.1.0',
-              sidebarId: 'karpeneterAlicloud_0.1.0_Sidebar'
+              label: 'Preview',
+              sidebarId: 'karpeneterAlicloud_preview_Sidebar'
             },
           ]
         },
