@@ -8,7 +8,7 @@ This guide shows how to get started with Karpenter by installing Karpenter. To u
 
 The guide below explains how to utilize the **Karpenter** provider for Alibaba Cloud with ACK.
 
-## Step 1. Install utilities
+### Step 1. Install utilities
 
 **Karpenter** requires cloud provider permissions to provision nodes. Currently, Karpenter uses AK/SK credentials (stored as a secret in the cluster) temporarily, but will adopt [RRSA](https://github.com/cloudpilot-ai/karpenter-provider-alicloud/issues/29) in the future to enhance credential security.
 
@@ -21,14 +21,47 @@ Run the following command to configure the AlibabaCloud CLI with AK/SK credentia
 aliyun configure
 ```
 
-## Step 2. Prepare an Alibaba Cloud ACK cluster
+### Step 2. Prepare an Alibaba Cloud ACK cluster
 
-## Step 3. Install Karpenter
+:::note
+If you already have an ACK cluster, please skip this step.
+:::
 
-## Step 4. Create NodePool/ECSNodeClass
+Referring to [Create ACK cluster with Terraform](https://github.com/cloudpilot-ai/examples/tree/main/clusters/ack-ondemand) to create a cluster easily.
 
-## Step 5. Scale up deployment
+### Step 3. Config the environment variables
 
-## Step 6. Scale down deployment
+Run the following command to configure the AlibabaCloud CLI credentials:
+```bash
+aliyun configure
+```
 
-## Step 7. Uninstall Karpenter
+And then set the following to set environment variables:
+```bash
+export CLUSTER_NAME=<your_cluster_name>   #config your region
+export ALIBABA_CLOUD_REGION=cn-shenzhen   #config your region
+
+export VSWITCH_IDS=$(aliyun cs GET /api/v1/clusters --header "Content-Type=application/json;" | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.clusters[] | select(.name == $CLUSTER_NAME) | .vswitch_ids[]')
+
+export SECURITYGROUP_ID=$(aliyun cs GET /api/v1/clusters --header "Content-Type=application/json;" | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.clusters[] | select(.name == $CLUSTER_NAME) | .security_group_id')
+
+# Tag the security group
+aliyun tag TagResources --region ${ALIBABA_CLOUD_REGION} --RegionId ${ALIBABA_CLOUD_REGION} --ResourceARN.1 "acs:ecs:*:*:securitygroup/${SECURITYGROUP_ID}" --Tags "{\"karpenter.sh/discovery\": \"$CLUSTER_NAME\"}"
+
+
+# Tag the vswitch
+IFS=' '
+while IFS= read -r vs_id; do
+  aliyun tag TagResources --region ${ALIBABA_CLOUD_REGION} --RegionId ${ALIBABA_CLOUD_REGION} --ResourceARN.1 "acs:vpc:*:*:vswitch/${vs_id}" --Tags "{\"karpenter.sh/discovery\": \"$CLUSTER_NAME\"}"
+done <<< $VSWITCH_IDS
+```
+
+### Step 4. Install Karpenter
+
+### Step 5. Create NodePool/ECSNodeClass
+
+### Step 6. Scale up deployment
+
+### Step 7. Scale down deployment
+
+### Step 8. Uninstall Karpenter
