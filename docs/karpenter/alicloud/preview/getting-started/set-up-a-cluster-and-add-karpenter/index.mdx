@@ -1,0 +1,34 @@
+---
+title: Set up a cluster and add Karpenter
+---
+
+**Karpenter** automatically provisions new nodes in response to unschedulable pods. **Karpenter** does this by observing events within the Kubernetes cluster, and then sending commands to the underlying cloud provider.
+
+This guide shows how to get started with Karpenter by installing Karpenter. To use Karpenter, you must be running a supported Kubernetes cluster on Alibaba Cloud provider.
+
+The guide below explains how to utilize the **Karpenter** provider for Alibaba Cloud with ACK.
+
+## Step 1. Install utilities
+
+**Karpenter** requires cloud provider permissions to provision nodes. Currently, Karpenter uses AK/SK credentials (stored as a secret in the cluster) temporarily, but will adopt [RRSA](https://github.com/cloudpilot-ai/karpenter-provider-alicloud/issues/29) in the future to enhance credential security.
+
+Install these tools before proceeding:
+* [AlibabaCloud CLI](https://www.alibabacloud.com/help/en/cli/installation-guide/)
+* [kubectl](https://kubernetes.io/docs/tasks/tools/)
+
+Run the following command to configure the AlibabaCloud CLI with AK/SK credentials:
+```bash
+aliyun configure
+```
+
+## Step 2. Prepare an Alibaba Cloud ACK cluster
+
+## Step 3. Install Karpenter
+
+## Step 4. Create NodePool/ECSNodeClass
+
+## Step 5. Scale up deployment
+
+## Step 6. Scale down deployment
+
+## Step 7. Uninstall Karpenter
