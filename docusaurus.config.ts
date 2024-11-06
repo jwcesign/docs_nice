@@ -1,6 +1,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import type { PluginOptions as RedirectOptions } from '@docusaurus/plugin-client-redirects';
 
 const config: Config = {
   title: 'CloudPilot AI',
@@ -135,8 +136,6 @@ const config: Config = {
         {
           label: 'Karpenter Alibaba Cloud',
           type: 'dropdown',
-          to: 'api',
-          sidebarId: 'karpeneterAlicloud_preview_Sidebar',
           position: 'left',
           items: [
             /**
@@ -177,8 +176,25 @@ const config: Config = {
     colorMode: {
       defaultMode: 'light',
       disableSwitch: true,
-    }
+    },
   } satisfies Preset.ThemeConfig,
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          /**
+           * For every new version created, we need to update the "to" here
+           * to point to the new version's index page
+           */
+          {
+            from: '/alicloud',
+            to: '/karpenter/alicloud/preview/getting-started/',
+          },
+        ],
+      } satisfies Partial<RedirectOptions>
+    ]
+  ],
 };
 
 export default config;

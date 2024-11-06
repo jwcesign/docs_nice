@@ -57,7 +57,12 @@ const sidebars: SidebarsConfig = {
     },
   ],
 
-  /** For every version for each providers, we need to create a new sidebar definition. */
+  /**
+   * For every version for each providers, we need to create a new sidebar definition.
+   *
+   * Also for every new version created, we need to update the "@docusaurus/plugin-client-redirects"
+   * settings in the docusaurus.config.ts file.
+   */
   // The collection of "Karpenter Alibaba Cloud - 0.1.0" documents.
   ['karpeneterAlicloud_preview_Sidebar']: [
     {
