@@ -57,15 +57,20 @@ const sidebars: SidebarsConfig = {
     },
   ],
 
-  /** For every version for each providers, we need to create a new sidebar definition. */
+  /**
+   * For every version for each providers, we need to create a new sidebar definition.
+   *
+   * Also for every new version created, we need to update the "@docusaurus/plugin-client-redirects"
+   * settings in the docusaurus.config.ts file.
+   */
   // The collection of "Karpenter Alibaba Cloud - 0.1.0" documents.
   ['karpeneterAlicloud_preview_Sidebar']: [
     {
       type: 'category',
       label: 'Getting Started',
-      link: { type: 'doc', id: 'karpenter/alicloud/preview/getting-started/index' },
+      link: { type: 'doc', id: 'karpenter/alibabacloud/preview/getting-started/index' },
       items: [
-        'karpenter/alicloud/preview/getting-started/set-up-a-cluster-and-add-karpenter/index',
+        'karpenter/alibabacloud/preview/getting-started/set-up-a-cluster-and-add-karpenter/index',
       ],
     },
   ],
