@@ -188,8 +188,8 @@ const config: Config = {
            * to point to the new version's index page
            */
           {
-            from: '/karpenter/alicloud',
-            to: '/karpenter/alicloud/preview/getting-started/',
+            from: '/karpenter/alibabacloud',
+            to: '/karpenter/alibabacloud/preview/getting-started/',
           },
         ],
       } satisfies Partial<RedirectOptions>

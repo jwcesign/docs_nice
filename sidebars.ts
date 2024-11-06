@@ -68,9 +68,9 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Getting Started',
-      link: { type: 'doc', id: 'karpenter/alicloud/preview/getting-started/index' },
+      link: { type: 'doc', id: 'karpenter/alibabacloud/preview/getting-started/index' },
       items: [
-        'karpenter/alicloud/preview/getting-started/set-up-a-cluster-and-add-karpenter/index',
+        'karpenter/alibabacloud/preview/getting-started/set-up-a-cluster-and-add-karpenter/index',
       ],
     },
   ],
