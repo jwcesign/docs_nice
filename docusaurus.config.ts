@@ -134,6 +134,9 @@ const config: Config = {
         /* Navbar Item "Alibaba Cloud" */
         {
           label: 'Karpenter Alibaba Cloud',
+          type: 'dropdown',
+          to: 'api',
+          sidebarId: 'karpeneterAlicloud_preview_Sidebar',
           position: 'left',
           items: [
             /**
