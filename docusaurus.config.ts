@@ -188,7 +188,7 @@ const config: Config = {
            * to point to the new version's index page
            */
           {
-            from: '/alicloud',
+            from: '/karpenter/alicloud',
             to: '/karpenter/alicloud/preview/getting-started/',
           },
         ],
