@@ -2,19 +2,20 @@
 title: Set up a cluster and add Karpenter
 ---
 
-**Karpenter** automatically provisions new nodes in response to unschedulable pods. **Karpenter** does this by observing events within the Kubernetes cluster, and then sending commands to the underlying cloud provider.
+Karpenter automatically provisions new nodes in response to unschedulable pods. Karpenter does this by observing events within the Kubernetes cluster, and then sending commands to the underlying cloud provider.
 
 This guide shows how to get started with Karpenter by installing Karpenter. To use Karpenter, you must be running a supported Kubernetes cluster on Alibaba Cloud provider.
 
-The guide below explains how to utilize the **Karpenter** provider for Alibaba Cloud with ACK.
+The guide below explains how to utilize the Karpenter provider for Alibaba Cloud with ACK.
 
 ### Step 1. Install utilities
 
-**Karpenter** requires cloud provider permissions to provision nodes. Currently, Karpenter uses AK/SK credentials (stored as a secret in the cluster) temporarily, but will adopt [RRSA](https://github.com/cloudpilot-ai/karpenter-provider-alicloud/issues/29) in the future to enhance credential security.
+Karpenter requires cloud provider permissions to provision nodes. Currently, Karpenter uses AK/SK credentials (stored as a secret in the cluster) temporarily, but will adopt [RRSA](https://github.com/cloudpilot-ai/karpenter-provider-alicloud/issues/29) in the future to enhance credential security.
 
 Install these tools before proceeding:
 * [AlibabaCloud CLI](https://www.alibabacloud.com/help/en/cli/installation-guide/)
 * [kubectl](https://kubernetes.io/docs/tasks/tools/)
+* [helm](https://helm.sh/docs/intro/install/)
 
 Run the following command to configure the AlibabaCloud CLI with AK/SK credentials:
 ```bash
@@ -27,27 +28,28 @@ aliyun configure
 If you already have an ACK cluster, please skip this step.
 :::
 
-Referring to [Create ACK cluster with Terraform](https://github.com/cloudpilot-ai/examples/tree/main/clusters/ack-ondemand) to create a cluster easily.
+Referring to [Create ACK cluster with Terraform](https://github.com/cloudpilot-ai/examples/tree/main/clusters/ack-ondemand-terway) to create a cluster easily.
 
 ### Step 3. Config the environment variables
 
-Run the following command to configure the AlibabaCloud CLI credentials:
-```bash
-aliyun configure
-```
-
-And then set the following to set environment variables:
+Run the following commands to set corresponding environment variables:
 ```bash
 export CLUSTER_NAME=<your_cluster_name>   #config your region
 export ALIBABA_CLOUD_REGION=cn-shenzhen   #config your region
 
+export CLUSTER_ID=$(aliyun cs GET /clusters | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.[] | select(.name == $CLUSTER_NAME) | .cluster_id')
+
 export VSWITCH_IDS=$(aliyun cs GET /api/v1/clusters --header "Content-Type=application/json;" | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.clusters[] | select(.name == $CLUSTER_NAME) | .vswitch_ids[]')
 
 export SECURITYGROUP_ID=$(aliyun cs GET /api/v1/clusters --header "Content-Type=application/json;" | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.clusters[] | select(.name == $CLUSTER_NAME) | .security_group_id')
+```
 
+### Step 4. Tag related resources
+
+Karpenter find the corresponding security group and vswitches by tags, run the following commands to tag them:
+```bash
 # Tag the security group
 aliyun tag TagResources --region ${ALIBABA_CLOUD_REGION} --RegionId ${ALIBABA_CLOUD_REGION} --ResourceARN.1 "acs:ecs:*:*:securitygroup/${SECURITYGROUP_ID}" --Tags "{\"karpenter.sh/discovery\": \"$CLUSTER_NAME\"}"
-
 
 # Tag the vswitch
 IFS=' '
@@ -56,12 +58,156 @@ while IFS= read -r vs_id; do
 done <<< $VSWITCH_IDS
 ```
 
-### Step 4. Install Karpenter
+### Step 5. Install Karpenter
 
-### Step 5. Create NodePool/ECSNodeClass
+Run the following command to install the latest version of Karpenter alibaba cloud provider:
 
-### Step 6. Scale up deployment
+```bash
+helm repo add karpenter-provider-alibabacloud https://cloudpilot-ai.github.io/karpenter-provider-alibabacloud
 
-### Step 7. Scale down deployment
+helm upgrade karpenter karpenter-provider-alibabacloud/karpenter --install \
+  --namespace karpenter-system --create-namespace \
+  --set "alibabacloud.access_key_id"=${ALIBABACLOUD_AK} \
+  --set "alibabacloud.access_key_secret"=${ALIBABACLOUD_SK} \
+  --set "alibabacloud.region_id"=${CLUSTER_REGION} \
+  --set controller.settings.clusterName=${CLUSTER_NAME} \
+  --set controller.settings.clusterID=${CLUSTER_ID} \
+  --wait
+```
 
-### Step 8. Uninstall Karpenter
+### Step 6. Create NodePool/ECSNodeClass
+
+Create the following ECSNodeClass and NodePool:
+```bash
+cat > nodeclass.yaml <<EOF
+apiVersion: karpenter.k8s.alibabacloud/v1alpha1
+kind: ECSNodeClass
+metadata:
+  name: defaultnodeclass
+spec:
+  tags:
+    c: d
+  vSwitchSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "${CLUSTER_NAME}" # replace with your cluster name
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "${CLUSTER_NAME}" # replace with your cluster name
+  imageSelectorTerms:
+    # ContainerOS only support x86_64 linux nodes, and it's faster to initialize
+    - alias: ContainerOS
+EOF
+
+kubectl apply -f nodeclass.yaml
+
+
+cat > nodepool.yaml <<EOF
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: ecsnodepool
+spec:
+  disruption:
+    budgets:
+      - nodes: 95%
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 1m
+  template:
+    spec:
+      requirements:
+        - key: kubernetes.io/arch
+          operator: In
+          values: [ "amd64" ]
+        - key: kubernetes.io/os
+          operator: In
+          values: ["linux"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["spot"]
+      nodeClassRef:
+        group: "karpenter.k8s.alibabacloud"
+        kind: ECSNodeClass
+        name: defaultnodeclass
+EOF
+
+kubectl apply -f nodepool.yaml
+```
+
+### Step 7. Scale up deployment
+
+Apply the following command to test the node scaling up:
+```
+cat > deployment.yaml <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inflate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inflate
+  template:
+    metadata:
+      labels:
+        app: inflate
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: karpenter.sh/capacity-type
+                    operator: Exists
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+      - image: public.ecr.aws/eks-distro/kubernetes/pause:3.2
+        name: inflate
+        resources:
+          requests:
+            cpu: 250m
+            memory: 250Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+EOF
+
+kubectl apply -f deployment.yaml
+```
+
+After the deployment is deployed, after about one minute, you will see there is one new node created and the pod is scheduled on the new node:
+```bash
+$ kubectl get nodes
+NAME                       STATUS   ROLES    AGE   VERSION
+cn-shenzhen.172.16.1.58    Ready    <none>   22m   v1.31.1-aliyun.1
+cn-shenzhen.172.16.2.142   Ready    <none>   22m   v1.31.1-aliyun.1
+cn-shenzhen.172.16.5.18    Ready    <none>   43s   v1.31.1-aliyun.1
+
+$ kubectl get po -l app=inflate -owide
+NAME                       READY   STATUS    RESTARTS   AGE     IP           NODE                      NOMINATED NODE   READINESS GATES
+inflate-7758687f95-5r42m   1/1     Running   0          3m14s   10.169.2.2   cn-shenzhen.172.16.5.18   <none>           <none>
+```
+
+### Step 8. Scale down deployment
+
+```
+kubectl scale deployment/inflate --replicas=0
+```
+
+After the deployment is scaled down, you will see the new node are deleted:
+```bash
+$ kubectl get nodes
+NAME                       STATUS   ROLES    AGE   VERSION
+cn-shenzhen.172.16.1.58    Ready    <none>   22m   v1.31.1-aliyun.1
+cn-shenzhen.172.16.2.142   Ready    <none>   22m   v1.31.1-aliyun.1
+```
+
+### Step 9. Uninstall Karpenter
+
+You can run the following commands to uninstall Karpenter:
+```bash
+helm uninstall karpenter --namespace karpenter-system
+kubectl delete ns karpenter-system
+```
