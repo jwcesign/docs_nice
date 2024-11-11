@@ -191,6 +191,10 @@ const config: Config = {
             from: '/karpenter/alibabacloud',
             to: '/karpenter/alibabacloud/preview/getting-started/',
           },
+          {
+            from: '/karpenter/alibabacloud/installation',
+            to: '/karpenter/alibabacloud/preview/getting-started/set-up-a-cluster-and-add-karpenter/',
+          },
         ],
       } satisfies Partial<RedirectOptions>
     ]
