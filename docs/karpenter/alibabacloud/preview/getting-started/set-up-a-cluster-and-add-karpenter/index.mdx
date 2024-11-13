@@ -35,7 +35,7 @@ Referring to [Create ACK cluster with Terraform](https://github.com/cloudpilot-a
 Run the following commands to set corresponding environment variables:
 ```bash
 export CLUSTER_NAME=<your_cluster_name>              #config your region
-export ALIBABA_CLOUD_REGION=<your_cluster_region>    #config your region
+export CLUSTER_REGION=<your_cluster_region>          #config your region
 export ALIBABACLOUD_AK=<alibaba_cloud_access_key>    #config ak
 export ALIBABACLOUD_SK=<alibaba_cloud_secret_key>    #config sk
 
@@ -46,17 +46,17 @@ export VSWITCH_IDS=$(aliyun cs GET /api/v1/clusters --header "Content-Type=appli
 export SECURITYGROUP_ID=$(aliyun cs GET /api/v1/clusters --header "Content-Type=application/json;" | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.clusters[] | select(.name == $CLUSTER_NAME) | .security_group_id')
 ```
 
-### Step 4. Tag related resources
+### Step 4. Tag related resources˙
 
 Karpenter find the corresponding security group and vswitches by tags, run the following commands to tag them:
 ```bash
 # Tag the security group
-aliyun tag TagResources --region ${ALIBABA_CLOUD_REGION} --RegionId ${ALIBABA_CLOUD_REGION} --ResourceARN.1 "acs:ecs:*:*:securitygroup/${SECURITYGROUP_ID}" --Tags "{\"karpenter.sh/discovery\": \"$CLUSTER_NAME\"}"
+aliyun tag TagResources --region ${CLUSTER_REGION} --RegionId ${CLUSTER_REGION} --ResourceARN.1 "acs:ecs:*:*:securitygroup/${SECURITYGROUP_ID}" --Tags "{\"karpenter.sh/discovery\": \"$CLUSTER_NAME\"}"
 
 # Tag the vswitch
 IFS=' '
 while IFS= read -r vs_id; do
-  aliyun tag TagResources --region ${ALIBABA_CLOUD_REGION} --RegionId ${ALIBABA_CLOUD_REGION} --ResourceARN.1 "acs:vpc:*:*:vswitch/${vs_id}" --Tags "{\"karpenter.sh/discovery\": \"$CLUSTER_NAME\"}"
+  aliyun tag TagResources --region ${CLUSTER_REGION} --RegionId ${CLUSTER_REGION} --ResourceARN.1 "acs:vpc:*:*:vswitch/${vs_id}" --Tags "{\"karpenter.sh/discovery\": \"$CLUSTER_NAME\"}"
 done <<< $VSWITCH_IDS
 ```
 
@@ -195,7 +195,7 @@ inflate-7758687f95-5r42m   1/1     Running   0          3m14s   10.169.2.2   cn-
 kubectl scale deployment/inflate --replicas=0
 ```
 
-After the deployment is scaled down, you will see the new node are deleted:
+After the deployment is scaled down, you will see the new node are deleted after some time:
 ```bash
 $ kubectl get nodes
 NAME                       STATUS   ROLES    AGE   VERSION
