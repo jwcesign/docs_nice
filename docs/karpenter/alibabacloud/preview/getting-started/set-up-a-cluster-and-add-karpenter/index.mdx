@@ -67,7 +67,8 @@ Run the following command to install the latest version of Karpenter alibaba clo
 ```bash
 helm repo add karpenter-provider-alibabacloud https://cloudpilot-ai.github.io/karpenter-provider-alibabacloud
 
-helm upgrade karpenter karpenter-provider-alibabacloud/karpenter --install \
+# 0.0.1 is the latest development version
+helm upgrade karpenter karpenter-provider-alibabacloud/karpenter --install --version 0.0.1 \
   --namespace karpenter-system --create-namespace \
   --set "alibabacloud.access_key_id"=${ALIBABACLOUD_AK} \
   --set "alibabacloud.access_key_secret"=${ALIBABACLOUD_SK} \
@@ -195,7 +196,7 @@ inflate-7758687f95-5r42m   1/1     Running   0          3m14s   10.169.2.2   cn-
 kubectl scale deployment/inflate --replicas=0
 ```
 
-After the deployment is scaled down, you will see the new node are deleted:
+After the deployment is scaled down, you will see the new node are deleted after some time:
 ```bash
 $ kubectl get nodes
 NAME                       STATUS   ROLES    AGE   VERSION
