@@ -46,7 +46,7 @@ export VSWITCH_IDS=$(aliyun cs GET /api/v1/clusters --header "Content-Type=appli
 export SECURITYGROUP_ID=$(aliyun cs GET /api/v1/clusters --header "Content-Type=application/json;" | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.clusters[] | select(.name == $CLUSTER_NAME) | .security_group_id')
 ```
 
-### Step 4. Tag related resources˙
+### Step 4. Tag related resources
 
 Karpenter find the corresponding security group and vswitches by tags, run the following commands to tag them:
 ```bash
