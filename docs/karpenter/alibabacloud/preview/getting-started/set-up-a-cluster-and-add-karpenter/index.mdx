@@ -34,8 +34,10 @@ Referring to [Create ACK cluster with Terraform](https://github.com/cloudpilot-a
 
 Run the following commands to set corresponding environment variables:
 ```bash
-export CLUSTER_NAME=<your_cluster_name>   #config your region
-export ALIBABA_CLOUD_REGION=cn-shenzhen   #config your region
+export CLUSTER_NAME=<your_cluster_name>              #config your region
+export ALIBABA_CLOUD_REGION=<your_cluster_region>    #config your region
+export ALIBABACLOUD_AK=<alibaba_cloud_access_key>    #config ak
+export ALIBABACLOUD_SK=<alibaba_cloud_secret_key>    #config sk
 
 export CLUSTER_ID=$(aliyun cs GET /clusters | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.[] | select(.name == $CLUSTER_NAME) | .cluster_id')
 
@@ -70,7 +72,6 @@ helm upgrade karpenter karpenter-provider-alibabacloud/karpenter --install \
   --set "alibabacloud.access_key_id"=${ALIBABACLOUD_AK} \
   --set "alibabacloud.access_key_secret"=${ALIBABACLOUD_SK} \
   --set "alibabacloud.region_id"=${CLUSTER_REGION} \
-  --set controller.settings.clusterName=${CLUSTER_NAME} \
   --set controller.settings.clusterID=${CLUSTER_ID} \
   --wait
 ```
@@ -85,8 +86,6 @@ kind: ECSNodeClass
 metadata:
   name: defaultnodeclass
 spec:
-  tags:
-    c: d
   vSwitchSelectorTerms:
     - tags:
         karpenter.sh/discovery: "${CLUSTER_NAME}" # replace with your cluster name
