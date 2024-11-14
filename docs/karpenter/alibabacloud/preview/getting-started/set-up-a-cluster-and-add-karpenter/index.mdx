@@ -34,10 +34,10 @@ Referring to [Create ACK cluster with Terraform](https://github.com/cloudpilot-a
 
 Run the following commands to set corresponding environment variables:
 ```bash
-export CLUSTER_NAME=<your_cluster_name>              #config your region
-export CLUSTER_REGION=<your_cluster_region>          #config your region
-export ALIBABACLOUD_AK=<alibaba_cloud_access_key>    #config ak
-export ALIBABACLOUD_SK=<alibaba_cloud_secret_key>    #config sk
+export CLUSTER_NAME=<your_cluster_name>              # Config your cluster name
+export CLUSTER_REGION=<your_cluster_region>          # Config the alibabacloud region
+export ALIBABACLOUD_AK=<alibaba_cloud_access_key>    # Config the alibabacloud AK
+export ALIBABACLOUD_SK=<alibaba_cloud_secret_key>    # Config the alibabacloud SK
 
 export CLUSTER_ID=$(aliyun cs GET /clusters | jq -r --arg CLUSTER_NAME "$CLUSTER_NAME" '.[] | select(.name == $CLUSTER_NAME) | .cluster_id')
 
