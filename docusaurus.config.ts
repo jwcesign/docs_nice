@@ -150,6 +150,11 @@ const config: Config = {
               label: 'Preview',
               sidebarId: 'karpeneterAlicloud_preview_Sidebar'
             },
+            {
+              type: 'docSidebar',
+              label: 'v0.1',
+              sidebarId: 'karpeneterAlicloud_v0.1_Sidebar'
+            },
           ]
         },
         {
@@ -189,11 +194,11 @@ const config: Config = {
            */
           {
             from: '/karpenter/alibabacloud',
-            to: '/karpenter/alibabacloud/preview/getting-started/',
+            to: '/karpenter/alibabacloud/v0.1/getting-started/',
           },
           {
             from: '/karpenter/alibabacloud/installation',
-            to: '/karpenter/alibabacloud/preview/getting-started/set-up-a-cluster-and-add-karpenter/',
+            to: '/karpenter/alibabacloud/v0.1/getting-started/set-up-a-cluster-and-add-karpenter/',
           },
         ],
       } satisfies Partial<RedirectOptions>
