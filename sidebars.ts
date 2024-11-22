@@ -74,6 +74,16 @@ const sidebars: SidebarsConfig = {
       ],
     },
   ],
+  ['karpeneterAlicloud_v0.1_Sidebar']: [
+    {
+      type: 'category',
+      label: 'Getting Started',
+      link: { type: 'doc', id: 'karpenter/alibabacloud/v0.1/getting-started/index' },
+      items: [
+        'karpenter/alibabacloud/v0.1/getting-started/set-up-a-cluster-and-add-karpenter/index',
+      ],
+    },
+  ],
 };
 
 export default sidebars;
