@@ -1,12 +1,12 @@
 import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import type {Config, LoadContext} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import type { PluginOptions as RedirectOptions } from '@docusaurus/plugin-client-redirects';
 
 const config: Config = {
   title: 'CloudPilot AI',
   tagline: 'More Cloud, Less Cost',
-  favicon: 'img/favicon.ico',
+  favicon: 'https://assets.cloudpilot.ai/favicon/favicon.ico',
 
   // Set the production url of your site here
   url: 'https://doc.cloudpilot.ai',
@@ -86,12 +86,12 @@ const config: Config = {
       //... other Algolia params
     },
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    // image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'CloudPilot AI',
       logo: {
         alt: 'CloudPilot AI Logo',
-        src: 'img/logo.svg',
+        src: 'https://assets.cloudpilot.ai/logo/logo.svg',
         href: 'https://cloudpilot.ai',
       },
       items: [
@@ -197,7 +197,57 @@ const config: Config = {
           },
         ],
       } satisfies Partial<RedirectOptions>
-    ]
+    ],
+    (context) => ({
+      name: 'sukka-dousaurus-favicon-plugins',
+      injectHtmlTags() {
+        return {
+          headTags: [
+            {
+              tagName: "link",
+              attributes: {
+                rel: "icon",
+                type: "image/svg+xml",
+                href: "https://assets.cloudpilot.ai/favicon/favicon.svg",
+              },
+            },
+            {
+              tagName: "link",
+              attributes: {
+                rel: "icon",
+                type: "image/png",
+                sizes: "192x192",
+                href: "https://assets.cloudpilot.ai/favicon/web-app-manifest-192x192.png",
+              },
+            },
+            {
+              tagName: "link",
+              attributes: {
+                rel: "icon",
+                type: "image/png",
+                sizes: "96x96",
+                href: "https://assets.cloudpilot.ai/favicon/favicon-96x96.png",
+              },
+            },
+            {
+              tagName: "link",
+              attributes: {
+                rel: "shortcut icon",
+                href: "https://assets.cloudpilot.ai/favicon/favicon.ico",
+              },
+            },
+            {
+              tagName: "link",
+              attributes: {
+                rel: "apple-touch-icon",
+                sizes: "180x180",
+                href: "https://assets.cloudpilot.ai/favicon/apple-touch-icon.png",
+              },
+            },
+          ]
+        }
+      }
+    })
   ],
 };
 
