@@ -21,6 +21,7 @@ const sidebars: SidebarsConfig = {
         'getting-started/introduction',
         'getting-started/getting-started',
         'getting-started/permissions-required',
+        'getting-started/installation-environment',
       ],
     },
     {
