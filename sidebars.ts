@@ -30,6 +30,7 @@ const sidebars: SidebarsConfig = {
         'tips/ecr_auto_create',
         'tips/monitor_availability',
         'tips/aws_alb_best_practice',
+        'tips/aws_zone_id_name_query',
       ],
     },
   ],
