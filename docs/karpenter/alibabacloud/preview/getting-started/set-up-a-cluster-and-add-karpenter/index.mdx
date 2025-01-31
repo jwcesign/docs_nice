@@ -57,7 +57,7 @@ aliyun tag TagResources --region ${CLUSTER_REGION} --RegionId ${CLUSTER_REGION} 
 IFS=' '
 while IFS= read -r vs_id; do
   aliyun tag TagResources --region ${CLUSTER_REGION} --RegionId ${CLUSTER_REGION} --ResourceARN.1 "acs:vpc:*:*:vswitch/${vs_id}" --Tags "{\"karpenter.sh/discovery\": \"$CLUSTER_NAME\"}"
-done <<< $VSWITCH_IDS
+done <<< "$VSWITCH_IDS"
 ```
 
 ### Step 5. Install Karpenter
