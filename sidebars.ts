@@ -44,6 +44,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Product Changelog',
       items: [
+        'changelog/1.9.0',
         'changelog/1.8.0',
         'changelog/1.7.0',
       ]
