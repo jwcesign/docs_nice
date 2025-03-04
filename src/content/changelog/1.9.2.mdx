@@ -26,8 +26,9 @@ Now, CloudPilot AI supports this with the help of the [migration tools](https://
 3. Migrate the workloads via the command line:
    ```sh
    cd migrate
+   export KUBECONFIG=<your kubeconfig file path>
    # Use ./migrate_linux_amd64 if you're running Linux AMD64
-   ./migrate --kubeconfig $KUBECONFIG
+   ./migrate -kubeconfig $KUBECONFIG
    ```
    The following outlines the entire process:
    ![img](./img/migrate.png)
