@@ -1,16 +1,22 @@
 ---
-title: Deploying CloudPilot AI Using a Sub-User
+title: Deploy CloudPilot AI with Existing RAM User
 ---
 
-# Deploying CloudPilot AI Using a Sub-User
+import { Callout } from 'nextra/components'
 
-You can deploy CloudPilot AI using a sub-user by this tutorial.
+# Deploy CloudPilot AI with Existing RAM User
 
+By default, CloudPilot AI will use the Alibaba Cloud user's Access Key (AK) and Secret Key (SK) from the local environment to tag Security Groups and vSwitches. It will also retrieve the necessary ACK cluster information and create RAM users for CloudPilot AI components to perform ECS operations.
+
+However, in some cases, you may prefer not to use the default behavior and instead deploy CloudPilot AI with an existing RAM user that has the correct permissions.
+
+In such situations, you can follow this tutorial to deploy CloudPilot AI using your existing RAM user.
+
+<Callout type="info">
 Currently, the tutorial only supports `AlibabaCloud`.
+</Callout> 
 
-## AlibabaCloud
-
-### Step 1. Manually Create a AlibabaCloud RAM User
+## Step 1. Manually Create a AlibabaCloud RAM User
 
 If you want to deploy CloudPilot AI with minimal permissions, you need to manually create the required user and grant the necessary permissions.
 
@@ -26,7 +32,7 @@ You must click the following three buttons in order and properly save the copied
 
 ![create-alibabacloud-ram-user-3](./img/create-alibabacloud-ram-user-3.png)
 
-### Step 2. Add the Required Permissions for the New User
+## Step 2. Add the Required Permissions for the New User
 
 Visit this [page](https://ram.console.aliyun.com/policies) to create Policies.
 
@@ -51,8 +57,7 @@ Please replace the JSON content with the following permission settings:
                 "vpc:UntagResources",
                 "tag:TagResources",
                 "tag:UntagResources",
-                "ess:ModifyScalingGroup",
-                "ram:CreateServiceLinkedRole"
+                "ess:ModifyScalingGroup"
             ],
             "Resource": "*"
         }
@@ -79,15 +84,15 @@ After creation, visit [this page](https://ram.console.aliyun.com/permissions) to
 
 ![grant-alibabacloud-ram-policies](./img/grant-alibabacloud-ram-policies.png)
 
-### 3. Log in to Aliyun CLI using the minimal permission user.
+## 3. Configure Aliyun CLI using the minimal permission user.
 
-Use the AccessKey and SecretKey you just saved to log in to Aliyun CLI, and use this user to deploy CloudPilot AI to your cluster.
+Use the Access Key and Secret Key you just saved to log in to Aliyun CLI, and use this user to deploy CloudPilot AI to your cluster.
 
 ```sh
 aliyun configure
 ```
 
-### 4. Deploy CloudPilot AI
+## 4. Deploy CloudPilot AI
 
 Before deploying Phase 2, you must enter the following content to avoid permission issues.
 
@@ -99,8 +104,10 @@ export ACCESS_KEY_SECRET=<your secret key>
 
 Then, follow the steps provided by the Console to install Phase 2.
 
+<Callout type="info">
 Note: When uninstalling CloudPilot AI, if you deployed it using this method, you need to enter the following command before uninstallation.
 
 ```sh
 export SELF_MANAGE_USER=true
 ```
+</Callout>

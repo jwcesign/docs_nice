@@ -17,7 +17,8 @@ export default {
       getting_started: {
         items: {
           getting_started: {},
-          installation_environment: {}
+          installation_environment: {},
+          deploying_with_existing_user: {}
         }
       },
       nodes_optimization: {
