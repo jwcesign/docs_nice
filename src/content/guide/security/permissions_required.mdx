@@ -195,6 +195,11 @@ In the second phase, **CloudPilot AI** will request the following privileges:
                 "acs:ResourceTag\/ack.aliyun.com": "${INTERNAL_CLUSTER_ID}"
                 }
             }
+        },
+        {
+            "Action": "ram:CreateServiceLinkedRole",
+            "Resource": "*",
+            "Effect": "Allow"
         }
     ]
 }
