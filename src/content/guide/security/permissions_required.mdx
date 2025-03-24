@@ -171,8 +171,10 @@ In the second phase, **CloudPilot AI** will request the following privileges:
                 "cs:DescribeClusterDetail",
                 "cs:DescribeKubernetesVersionMetadata",
                 "cs:DescribeClusterAttachScripts",
+                "cs:DescribeClusterNodePools",
                 "ess:DescribeScalingGroups",
-                "ecs:AddTags"
+                "ecs:AddTags",
+                "ram:CreateServiceLinkedRole"
             ],
             "Resource": "*"
         },
@@ -195,11 +197,6 @@ In the second phase, **CloudPilot AI** will request the following privileges:
                 "acs:ResourceTag\/ack.aliyun.com": "${INTERNAL_CLUSTER_ID}"
                 }
             }
-        },
-        {
-            "Action": "ram:CreateServiceLinkedRole",
-            "Resource": "*",
-            "Effect": "Allow"
         }
     ]
 }
