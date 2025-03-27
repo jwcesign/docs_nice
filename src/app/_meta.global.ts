@@ -26,6 +26,11 @@ export default {
           keep_part_nodes: {}
         }
       },
+      rebalance_configuration: {
+        items: {
+          workload_config: {}
+        }
+      },
       security: {
         items: {
           permissions_required: {}
