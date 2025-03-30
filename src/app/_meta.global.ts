@@ -33,7 +33,8 @@ export default {
       },
       security: {
         items: {
-          permissions_required: {}
+          permissions_required: {},
+          data_collection: {}
         }
       },
       tips: {
