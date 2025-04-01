@@ -15,12 +15,12 @@ Some users may want to test the stability of CloudPilot AI by allowing it to man
 Now, CloudPilot AI supports this with the help of the [migration tools](https://github.com/cloudpilot-ai/migrate).
 
 **Steps**:
-1. Download the migration tools:
-   ```sh
-   git clone https://github.com/cloudpilot-ai/migrate.git
-   ```
+1. Download the migration tools from the [releases page](https://github.com/cloudpilot-ai/migrate/releases). Choose the appropriate version based on your platform and architecture:
+   - **Linux (AMD64/ARM64)**
+   - **macOS (AMD64/ARM64)**
+   - **Windows (AMD64/ARM64)**
 
-2. Install CloudPilot AI:  
+2. Install CloudPilot AI:
    Refer to the [Quick Start](/guide/getting_started/getting_started) guide. Remember, do not optimize the clusters—only the installation is needed.
 
 3. Migrate the workloads via the command line:
@@ -42,3 +42,4 @@ In the future, CloudPilot AI will provide this gradual migration ability through
 ### 🛠️ Bug Fixes
 - Fix an issue where a new node of the same type is created, while an old node of the same type, created several minutes earlier, is now being deleted, as shown below:
   ![img](./img/node_operation_unexpected.png)
+- Support priority score for `deployment` and `statefulset` workloads.
