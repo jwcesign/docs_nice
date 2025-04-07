@@ -16,6 +16,6 @@ module.exports = withNextra({
   },
   experimental: {
     reactCompiler: true,
-    reactOwnerStack: true
+    optimizeServerReact: true
   }
 });
