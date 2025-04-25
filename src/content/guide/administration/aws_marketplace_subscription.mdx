@@ -1,0 +1,49 @@
+---
+title: AWS Marketplace Subscription
+---
+
+import { Callout } from 'nextra/components'
+
+# AWS Marketplace Subscription for `CloudPilot AI`
+
+This guide explains how to activate your `CloudPilot AI` subscription through AWS Marketplace so that every management charge for your AWS-hosted Kubernetes clusters is consolidated into your regular AWS bill.
+
+## Prerequisites
+
+Before you begin, make sure that:
+- You have an AWS account with permission to purchase Marketplace products (for example, the `AWSMarketplaceManageSubscriptions` managed policy).
+- You can sign in to the `CloudPilot AI` console, or you are ready to create a new `CloudPilot AI` account.
+
+## Step 1: Locate `CloudPilot AI` in AWS Marketplace
+
+Sign in to the AWS Console and open AWS Marketplace.
+
+![marketplace_1](./img/marketplace_1.png)
+
+Click on `CloudPilot AI` to navigate to the product detail page. Here, you can review detailed information about CloudPilot AI.
+
+![marketplace_2](./img/marketplace_2.png)
+
+## Step 2: Choose a Subscription Plan
+
+On the `CloudPilot AI` product page, choose View purchase options.
+
+Pick either a plan and enable Auto-renewal if you want the subscription to extend automatically. Then, confirm your selection to complete the purchase.
+
+![marketplace_3](./img/marketplace_3.png)
+
+## Step 3: Link Your `CloudPilot AI` Account
+
+After the purchase succeeds, an `Set up your account` button appears on the product page.
+
+![marketplace_4](./img/marketplace_4.png)
+
+Click the button to open the `CloudPilot AI` console.
+- If you're already signed in, `CloudPilot AI` will automatically link the subscription to your account.
+- Otherwise, sign in or register, and `CloudPilot AI` completes the link once authentication finishes.
+
+<Callout type="info">
+    You can review `CloudPilot AI` charges anytime in **AWS Billing → Bills → Marketplace**, alongside your other AWS services.
+
+    `CloudPilot AI` automatically reports the average vCPU count across the nodes it manages to AWS Marketplace each hour to calculate your bill.
+</Callout>

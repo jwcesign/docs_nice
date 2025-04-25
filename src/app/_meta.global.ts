@@ -38,6 +38,11 @@ export default {
           aws_alb_best_practice: {},
           aws_zone_id_name_query: {}
         }
+      },
+      administration: {
+        items: {
+          aws_marketplace_subscription: {}
+        }
       }
     }
   },
