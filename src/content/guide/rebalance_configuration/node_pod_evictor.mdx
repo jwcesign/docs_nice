@@ -1,0 +1,41 @@
+---
+title: Node/Pod Evictor
+---
+
+import { Callout } from 'nextra/components'
+
+# Node/Pod Evictor
+
+The Node/Pod Evictor is a built‑in component of CloudPilot AI that contains both the Node Evictor and Pod Evictor. When a node is deemed high‑risk—or when a pod is running on a node that differs from its intended target—the Evictor works in conjunction with the Webhook component to automatically carry out the appropriate actions on the cluster.
+
+## Node Evictor
+
+CloudPilot AI analyzes both real‑time metrics and historical trends to gauge the interruption risk of Spot nodes. When the model predicts that a particular instance type in a given Availability Zone is likely to be reclaimed, it proactively evicts workloads from those nodes.
+
+Here’s how the Node Evictor runs:
+- For any one instance type, we evict only one node at a time. We won’t touch a second node of that type until the first one has fully drained out of the cluster.
+- After we trigger an eviction, we wait two minutes (our “waiting‑handle duration”) before taking the next step. If there are several nodes of the same kind, each one gets that pause.
+
+<Callout type="info">
+Heads‑up:
+For single‑replica apps, we try a rolling update first so your workload stays healthy.
+
+We can’t do that when:
+- the pod uses a persistent volume (PV), or
+- the workload blocks rolling updates entirely.
+</Callout>
+
+## Pod Evictor
+
+The Pod Evictor kicks in whenever certain changes hit your workload config.
+
+Example:
+
+Workload A is currently running only on `Spot` nodes. You tweak the workload configuration so at least X replicas have to land on `On‑Demand` nodes. The Pod Evictor will shuffle just the minimum number of replicas over to `On‑Demand`, striking a balance between stability and cost.
+
+<Callout type="info">
+Good to know:
+If a workload already has more than the minimum replicas on `On‑Demand` nodes, we won’t force‑evict the extras. When those pods restart naturally, we’ll try to schedule them back onto `Spot`. Need it done fast? After updating the config, simply restart the workload yourself.
+</Callout>
+
+When you turn on `Workload Diversity`, the Pod Evictor springs into action right away. Working together with our admission webhook, it makes sure ***each workload spans at least two instance types***, guarding you against a worst‑case single‑type outage.
