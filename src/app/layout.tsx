@@ -5,6 +5,7 @@ import { getPageMap } from 'nextra/page-map';
 import 'nextra-theme-docs/style.css';
 import { CurrentYear } from 'foxact/current-year';
 import type { Metadata } from 'next';
+import { SLACK_INVITE_LINK } from '../constant';
 
 import '../styles/layout.css';
 
@@ -63,7 +64,7 @@ const navbar = (
     chatIcon={
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="220" viewBox="0 0 16 16"><path fill="currentColor" d="M5.913 0a1.739 1.739 0 1 0 0 3.478h1.74V1.74A1.743 1.743 0 0 0 5.912 0zm4.174 0c-.96 0-1.74.778-1.74 1.74v4.173a1.739 1.739 0 1 0 3.48 0V1.739c0-.96-.78-1.739-1.74-1.739M1.739 4.174a1.739 1.739 0 1 0 0 3.478h4.174a1.739 1.739 0 1 0 0-3.478zm12.522 0c-.96 0-1.74.778-1.74 1.739v1.74h1.74a1.739 1.739 0 1 0 0-3.48zM1.739 8.348a1.739 1.739 0 1 0 1.74 1.739v-1.74zm4.174 0c-.96 0-1.74.778-1.74 1.739v4.174a1.739 1.739 0 1 0 3.48 0v-4.174c0-.96-.78-1.74-1.74-1.74zm4.174 0a1.739 1.739 0 1 0 0 3.478h4.174a1.739 1.739 0 1 0 0-3.478zm-1.74 4.174v1.739a1.739 1.739 0 1 0 1.74-1.74z" /></svg>
     }
-    chatLink="https://app.slack.com/client/T073TAAS5FW/C073J7ECB9C"
+    chatLink={SLACK_INVITE_LINK}
   />
 );
 const footer = (
@@ -86,7 +87,7 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
       suppressHydrationWarning
     >
       <Head
-        // ... additional head options
+      // ... additional head options
       >
         {/* additional tags should be passed as `children` of `<Head>` element */}
       </Head>
@@ -100,7 +101,7 @@ export default async function RootLayout({ children }: React.PropsWithChildren) 
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/cloudpilot-ai/docs/tree/main/"
           footer={footer}
-          // ... additional layout options
+        // ... additional layout options
         >
           {children}
         </Layout>
