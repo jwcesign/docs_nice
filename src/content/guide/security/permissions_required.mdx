@@ -1,15 +1,368 @@
----
-title: Permissions Required to Use CloudPilot AI
----
-
 # Permissions Required to Use CloudPilot AI
 
-CloudPilot AI installation involves two phases. In the first phase, only the agent is installed, collecting cluster resource-related data using read-only permissions.
+CloudPilot AI uses a two-phase installation to minimize security risk. Phase 1 requires read-only access to Kubernetes cluster resources. Phase 2 (optional) enables cluster optimization and requires additional Kubernetes RBAC and cloud provider permissions.
 
-## Privileges Needed with AWS
+CloudPilot AI follows the principle of least privilege. You only need to grant CloudPilot AI the minimal permissions required to perform its operations — no more.
 
-In the second phase, **CloudPilot AI** will request the following privileges to manage and scale your cloud resources:
+## Phase 1: Read-Only Permissions
 
+During the first agent installation phase, CloudPilot AI deploys an agent that collects metadata about your Kubernetes cluster. This requires read-only access to core Kubernetes APIs across namespaces.
+
+A `ClusterRole` and `Role` will be created with the following minimal permissions:
+
+<details>
+<summary>ClusterRole/Role Used in Phase 1</summary>
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloudpilot-agent-cluster-role
+rules:
+  - apiGroups:
+      - "storage.k8s.io"
+    resources:
+      - "csinodes"
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - "nodes"
+      - "pods"
+      - "persistentvolumeclaims"
+      - "persistentvolumes"
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "apps"
+    resources:
+      - "deployments"
+      - "daemonsets"
+      - "statefulsets"
+      - "replicasets"
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "policy"
+    resources:
+      - "poddisruptionbudgets"
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cloudpilot-agent-role
+  namespace: cloudpilot
+rules:
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["get", "list", "create", "update", "patch", "watch"]
+```
+</details>
+
+This allows discovery and reporting of node configurations and workload configurations to calculate the optimization plan.
+
+## Phase 2: Additional Permissions for Cluster Optimization
+
+If you proceed to Phase 2, CloudPilot AI will deploy components that actively optimize your cluster. This includes managing Kubernetes workloads and interacting with your cloud provider’s infrastructure APIs (e.g., EC2, Auto Scaling Groups).
+
+### Kubernetes RBAC Permissions
+
+To manage Kubernetes resources, CloudPilot AI requires `ClusterRole` and `Role` definitions with the following permissions:
+
+<details>
+<summary>ClusterRole/Role Used in Phase 2 for AWS</summary>
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cloudpilot-aws-optimizer
+  namespace: cloudpilot
+rules:
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resourceNames:
+  - cloudpilot-aws-optimizer-cert
+  - cloudpilot-webhook
+  resources:
+  - secrets
+  verbs:
+  - update
+- apiGroups:
+  - coordination.k8s.io
+  resourceNames:
+  - karpenter-leader-election
+  - cloudpilot-controller
+  - cloudpilot-workload-log-collector
+  resources:
+  - leases
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    meta.helm.sh/release-name: cloudpilot
+    meta.helm.sh/release-namespace: cloudpilot
+  name: cloudpilot-aws-optimizer
+rules:
+- apiGroups:
+  - karpenter.k8s.aws
+  resources:
+  - ec2nodeclasses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - karpenter.k8s.aws
+  resources:
+  - ec2nodeclasses
+  - ec2nodeclasses/status
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - admissionregistration.k8s.io
+  resourceNames:
+  - validation.webhook.karpenter.k8s.aws
+  resources:
+  - validatingwebhookconfigurations
+  verbs:
+  - update
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - mutatingwebhookconfigurations
+  verbs:
+  - get
+  - update
+  - list
+  - watch
+- apiGroups:
+  - certificates.k8s.io
+  resources:
+  - '*'
+  verbs:
+  - get
+  - create
+  - update
+  - patch
+  - delete
+  - approve
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloudpilot-aws-optimizer-admin
+rules:
+- apiGroups:
+  - karpenter.sh
+  resources:
+  - nodepools
+  - nodepools/status
+  - nodeclaims
+  - nodeclaims/status
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - delete
+  - patch
+- apiGroups:
+  - karpenter.k8s.aws
+  resources:
+  - ec2nodeclasses
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - delete
+  - patch
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloudpilot-aws-optimizer-core
+rules:
+- apiGroups:
+  - karpenter.sh
+  resources:
+  - nodepools
+  - nodepools/status
+  - nodeclaims
+  - nodeclaims/status
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - pods/log
+  - nodes
+  - persistentvolumes
+  - persistentvolumeclaims
+  - replicationcontrollers
+  - namespaces
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - patch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  - csinodes
+  - volumeattachments
+  verbs:
+  - get
+  - watch
+  - list
+- apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  - deployments
+  - replicasets
+  - statefulsets
+  verbs:
+  - list
+  - watch
+  - get
+  - update
+  - patch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - get
+  - watch
+  - list
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - karpenter.sh
+  resources:
+  - nodeclaims
+  - nodeclaims/status
+  verbs:
+  - create
+  - delete
+  - update
+  - patch
+- apiGroups:
+  - karpenter.sh
+  resources:
+  - nodepools
+  - nodepools/status
+  verbs:
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - patch
+  - delete
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - pods/eviction
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - delete
+- apiGroups:
+  - apiextensions.k8s.io
+  resourceNames:
+  - ec2nodeclasses.karpenter.k8s.aws
+  - nodepools.karpenter.sh
+  - nodeclaims.karpenter.sh
+  resources:
+  - customresourcedefinitions/status
+  verbs:
+  - patch
+- apiGroups:
+  - apiextensions.k8s.io
+  resourceNames:
+  - ec2nodeclasses.karpenter.k8s.aws
+  - nodepools.karpenter.sh
+  - nodeclaims.karpenter.sh
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - update
+```
+</details>
+
+These permissions is needed to ensure the stability of the system while doing operations like scaling, provisioning, and termination.
+
+### Cloud Provider Permissions
+
+#### AWS IAM Permissions
+
+In Phase 2, CloudPilot AI requires an IAM role with the following permissions:
+
+<details>
+<summary>AWS IAM Role Used in Phase 2</summary>
 ```json
 {
     "Statement": [
@@ -152,11 +505,16 @@ In the second phase, **CloudPilot AI** will request the following privileges to 
     "Version": "2012-10-17"
 }
 ```
+</details>
 
-## Privileges Needed with AlibabaCloud
+These permissions include access to EC2 and Auto Scaling Group APIs, used to manage compute capacity dynamically.
 
-In the second phase, **CloudPilot AI** will request the following privileges:
+#### AlibabaCloud RAM Permissions
 
+For AlibabaCloud, the required RAM policy is as follows:
+
+<details>
+<summary>AlibabaCloud RAM Permissions</summary>
 ```json
 {
     "Version": "1",
@@ -203,12 +561,16 @@ In the second phase, **CloudPilot AI** will request the following privileges:
     ]
 }
 ```
+</details>
 
-**CloudPilot AI** requires nearly the same privileges as the open-source Karpenter, with additional permissions related to:
+These permissions allow CloudPilot AI to interact with ECS and ScalingGroup APIs for node lifecycle management.
 
-* `AWS/AutoScalingGroup`
-* `AlibabaCloud/ScalingGroup`
+All cloud provider permissions align closely with those used by Karpenter, with the addition of access to scaling group APIs (`AWS/AutoScalingGroup`, A`libabaCloud/ScalingGroup`) to enable existing node optimization.
 
-These permissions help optimize existing nodes.
+## Commitment to Privacy and Security
+
+CloudPilot AI adheres strictly to data protection best practices. We access only the data necessary for operation and optimization, and we never request or retain unnecessary privileges.
+
+By design, we reduce attack surfaces through scoped permissions and continuous review of access requirements. This ensures secure, compliant, and efficient operation within your environment.
 
 For further assistance, feel free to reach out to us through our [Slack channel](https://join.slack.com/t/cloudpilotai/shared_invite/zt-36q9wpyol-N2X3izL~HZcf1_QSko6~6Q).
