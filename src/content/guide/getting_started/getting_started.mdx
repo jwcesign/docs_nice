@@ -4,39 +4,56 @@ title: Quickstart
 
 # Quickstart
 
-## Step 1. Create a EKS cluster
+This document provides a step-by-step guide to deploying and optimize a cluster with CloudPilot AI. It covers cluster creation, connection to the CloudPilot AI console, installation of optimization components, and cluster rebalancing.
 
-Now, **CloudPilot AI** only supports EKS(AWS), ACK(Alibaba Cloud) clusters, other cloud providers will be supported soon. If you already have a cluster, please skip this step.
+## Prerequisites
 
-You can refer to the doc [Demostration Cluster for CloudPilot AI](https://github.com/cloudpilot-ai/examples/tree/main/clusters/eks-ondemand) to create an EKS cluster easily.
+- An AWS account with appropriate permissions to create and manage EKS clusters.
+- `kubectl`, `awscli`, and `eksctl` installed and configured on your local machine.
+- Access to the [CloudPilot AI console](https://console.cloudpilot.ai).
 
-## Step 2. Connect a Cluster to CloudPilot AI
+## Step 1: Create an EKS Cluster
 
-After logging in to [CloudPilot AI console](https://console.cloudpilot.ai), click on `Add Cluster` and execute the provided shell script in your terminal.
+Currently, **CloudPilot AI** supports only EKS (AWS) and ACK (Alibaba Cloud) clusters. Support for additional cloud providers will be added in the future. If you already have a compatible cluster, skip this step.
 
-![add-cluster-s1](./img/add-cluster-s1.png)
+To quickly set up an EKS cluster, follow the instructions in the [Demostration Cluster for CloudPilot AI](https://github.com/cloudpilot-ai/examples/tree/main/clusters/eks-ondemand).
+
+## Step 2: Connect Your Cluster to CloudPilot AI
+
+After logging into the [CloudPilot AI console](https://console.cloudpilot.ai), perform the following:
+
+1. Click **Add Cluster**.
+2. Copy and execute the provided shell command in your terminal.
+
+![add-cluster-s1](./img/add-cluster-s1.png)  
 ![add-cluster-s2](./img/add-cluster-s2.png)
 
-Once the shell script has run, click the `I ran the script` button. You will then see your potential savings with CloudPilot AI in the `Cost overview`.
+After executing the script:
+1. Click **I ran the script**.
+2. Navigate to the **Cost overview** tab to view potential savings.
 
-## Step 3. Install CloudPilot AI Optimization Components
+## Step 3: Install CloudPilot AI Optimization Components
 
-After connecting your cluster to CloudPilot AI, you can begin installing the optimization components by executing the provided shell script.
+Once your cluster is connected, proceed to install the optimization components:
+
+1. Run the provided shell script in your environment.
+2. After successful execution, click **I ran the script**.
+
+You will be redirected to the **Rebalance** page.
 
 ![add-controller](./img/add-controller.png)
 
-Once the shell script has run, click the `I ran the script` button. You will be redirected to the rebalance page.
+## Step 4: Rebalance Your Cluster
 
-## Step 4. Rebalance your cluster
+To optimize your cluster, initiate the rebalance process. This consists of three steps:
 
-Now, you can start rebalancing your clusters. This process will be done in three steps:
-1. Launch the new replacement nodes.
-2. Drain the workloads from the old nodes to the new nodes.
-3. Delete the old nodes.
+1. Launch new replacement nodes.
+2. Drain workloads from old nodes to the new ones.
+3. Terminate the old nodes safely after draining.
 
-This process ensures that your workloads are always available.
+This ensures zero-downtime workload migration while optimizing resource usage.
 
-![rebalance-1](./img/rebalance-s1.png)
+![rebalance-1](./img/rebalance-s1.png)  
 ![rebalance-2](./img/rebalance-s2.png)
 
-With these steps, your cluster is now managed by CloudPilot AI. It will scale out when your workloads increase and scale in when your workloads decrease, always choosing the nodes that best match your workloads.
+Once completed, your cluster will be under CloudPilot AI management. It will automatically scale out during workload surges and scale in during low usage, always selecting the most suitable node types for your workloads.
