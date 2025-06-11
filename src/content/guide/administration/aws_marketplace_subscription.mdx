@@ -6,44 +6,43 @@ import { Callout } from 'nextra/components'
 
 # AWS Marketplace Subscription for `CloudPilot AI`
 
-This guide explains how to activate your `CloudPilot AI` subscription through AWS Marketplace so that every management charge for your AWS-hosted Kubernetes clusters is consolidated into your regular AWS bill.
+This guide shows you how to activate a `CloudPilot AI` subscription through AWS Marketplace so that all management charges for your AWS‑hosted Kubernetes clusters appear on your regular AWS bill.
 
 ## Prerequisites
 
-Before you begin, make sure that:
-- You have an AWS account with permission to purchase Marketplace products (for example, the `AWSMarketplaceManageSubscriptions` managed policy).
-- You can sign in to the `CloudPilot AI` console, or you are ready to create a new `CloudPilot AI` account.
+Before you begin, confirm that:
 
-## Step 1: Locate `CloudPilot AI` in AWS Marketplace
+- **AWS account access** – Your AWS Identity has permission to subscribe to Marketplace products (for example, the managed policy **AWSMarketplaceManageSubscriptions**).
+- **CloudPilot AI account** – You can sign in to the `CloudPilot AI` console, or you are ready to create a new account during the linking step.
 
-Sign in to the AWS Console and open AWS Marketplace.
+## Step 1: Find the `CloudPilot AI` in AWS Marketplace
+
+1. Sign in to the AWS **Management Console**.
+2. Either follow the direct link below or search **CloudPilot AI** in **[AWS Marketplace](https://aws.amazon.com/marketplace)**.
+
+[CloudPilot AI in AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-njy5lk7ivnckm)
+
+## Step 2: Choose a subscription plan
+
+1. On the product listing page, choose **View purchase options**.
+2. Select the pricing plan that matches your expected cluster size, and (optionally) enable **Auto‑renewal**.
+3. Choose **Subscribe** (or **Continue to Subscribe**) and confirm in the popup dialog.
 
 ![marketplace_1](./img/marketplace_1.png)
 
-Click on `CloudPilot AI` to navigate to the product detail page. Here, you can review detailed information about CloudPilot AI.
+## Step 3: Link your `CloudPilot AI` account
+
+After the transaction completes, a **Set-up your account** button appears on the listing.
 
 ![marketplace_2](./img/marketplace_2.png)
 
-## Step 2: Choose a Subscription Plan
+Click **Set up your account** to open the `CloudPilot AI` console.
 
-On the `CloudPilot AI` product page, choose View purchase options.
-
-Pick either a plan and enable Auto-renewal if you want the subscription to extend automatically. Then, confirm your selection to complete the purchase.
-
-![marketplace_3](./img/marketplace_3.png)
-
-## Step 3: Link Your `CloudPilot AI` Account
-
-After the purchase succeeds, an `Set up your account` button appears on the product page.
-
-![marketplace_4](./img/marketplace_4.png)
-
-Click the button to open the `CloudPilot AI` console.
-- If you're already signed in, `CloudPilot AI` will automatically link the subscription to your account.
+- If you are already signed in, `CloudPilot AI` automatically links the subscription to your account.
 - Otherwise, sign in or register, and `CloudPilot AI` completes the link once authentication finishes.
 
 <Callout type="info">
-    You can review `CloudPilot AI` charges anytime in **AWS Billing → Bills → Marketplace**, alongside your other AWS services.
+    You can review `CloudPilot AI` usage at any time in **[AWS Billing](https://us-east-1.console.aws.amazon.com/billing/home#/bills)**.
 
-    `CloudPilot AI` automatically reports the average vCPU count across the nodes it manages to AWS Marketplace each hour to calculate your bill.
+    `CloudPilot AI` reports the average vCPU count across the nodes it manages to AWS Marketplace every hour to calculate your bill.
 </Callout>
