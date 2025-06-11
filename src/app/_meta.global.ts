@@ -18,20 +18,16 @@ export default {
         items: {
           getting_started: {},
           installation_environment: {},
-          deploying_with_existing_user: {},
-          uninstall: {}
-        }
-      },
-      nodes_optimization: {
-        items: {
-          keep_part_nodes: {}
+          deploying_with_existing_user: {}
         }
       },
       rebalance_configuration: {
         items: {
           workload_config: {},
           workload_diversity: {},
-          node_pod_evictor: {}
+          node_pod_evictor: {},
+          keep_part_nodes: {},
+          node_template_configuration: {}
         }
       },
       security: {
@@ -40,17 +36,19 @@ export default {
           data_collection: {}
         }
       },
+      administration: {
+        items: {
+          aws_marketplace_subscription: {},
+          upgrade_guide: {},
+          uninstall: {}
+        }
+      },
       tips: {
         items: {
           ecr_auto_create: {},
           monitor_availability: {},
           aws_alb_best_practice: {},
           aws_zone_id_name_query: {}
-        }
-      },
-      administration: {
-        items: {
-          aws_marketplace_subscription: {}
         }
       }
     }
