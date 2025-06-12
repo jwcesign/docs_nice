@@ -14,25 +14,25 @@ Data is transmitted to CloudPilot AI's service using TLS encryption and is autho
 
 CloudPilot AI collects the following cluster-related details:
 
-| Parameter                           | Description                                                   | Default |
-| ----------------------------------- | ------------------------------------------------------------- | ------- |
-| **Cloud Provider**                  | Cloud provider (e.g., `AWS`, `GCP`)                           | N/A     |
-| **Cluster Name**                    | Name of the cluster (e.g., `aws-eks-cluster`)                 | N/A     |
-| **Cluster Version**                 | Version of the cluster (e.g., `v1.31.5-eks-5d632ec`)          | N/A     |
-| **Cluster Region**                  | Region of the cluster (e.g., `us-east-2`)                     | N/A     |
-| **Installed CloudPilot AI Version** | Version of CloudPilot AI component installed (e.g., `v1.9.5`) | N/A     |
+| Parameter                           | Description                                                   |
+| ----------------------------------- | ------------------------------------------------------------- |
+| **Cloud Provider**                  | Cloud provider (e.g., `AWS`, `GCP`)                           |
+| **Cluster Name**                    | Name of the cluster (e.g., `aws-eks-cluster`)                 |
+| **Cluster Version**                 | Version of the cluster (e.g., `v1.31.5-eks-5d632ec`)          |
+| **Cluster Region**                  | Region of the cluster (e.g., `us-east-2`)                     |
+| **Installed CloudPilot AI Version** | Version of CloudPilot AI component installed (e.g., `v1.9.5`) |
 
 ### Node Information
 
 CloudPilot AI gathers essential node details, including:
 
-| Parameter                   | Description                                                                                                                                        | Default |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| **Node Name**               | Name of the node (e.g., `ip-10-0-2-10.us-east-2.compute.internal`)                                                                                 | N/A     |
-| **Instance Type**           | Instance type (e.g., `t2.micro`)                                                                                                                   | N/A     |
-| **Pricing Model**           | Pricing model (e.g., `on-demand` or `spot`)                                                                                                        | N/A     |
-| **Zone**                    | Availability zone (e.g., `us-east-2a`)                                                                                                             | N/A     |
-| **Spot Interruption Event** | Information about spot instance interruptions (e.g., `spot instance ip-10-0-2-10.us-east-2.compute.internal` interrupted at `2023-06-28 16:00:00`) | N/A     |
+| Parameter                   | Description                                                                                                                                        |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Node Name**               | Name of the node (e.g., `ip-10-0-2-10.us-east-2.compute.internal`)                                                                                 |
+| **Instance Type**           | Instance type (e.g., `t2.micro`)                                                                                                                   |
+| **Pricing Model**           | Pricing model (e.g., `on-demand` or `spot`)                                                                                                        |
+| **Zone**                    | Availability zone (e.g., `us-east-2a`)                                                                                                             |
+| **Spot Interruption Event** | Information about spot instance interruptions (e.g., `spot instance ip-10-0-2-10.us-east-2.compute.internal` interrupted at `2023-06-28 16:00:00`) |
 
 You can retrieve node information using the following command:
 
@@ -47,12 +47,12 @@ ip-10-0-43-157.us-east-2.compute.internal Ready    <none>   92m   v1.31.5-eks-5d
 
 CloudPilot AI tracks the following workload data:
 
-| Parameter              | Description                                          | Default |
-| ---------------------- | ---------------------------------------------------- | ------- |
-| **Workload Type**      | Type of workload (e.g., `Deployment`, `StatefulSet`) | N/A     |
-| **Workload Name**      | Name of the workload (e.g., `redis`, `nginx-web`)    | N/A     |
-| **Workload Namespace** | Namespace of the workload (e.g., `default`)          | N/A     |
-| **Workload Replicas**  | Number of replicas for the workload (e.g., `3`)      | N/A     |
+| Parameter              | Description                                          |
+| ---------------------- | ---------------------------------------------------- |
+| **Workload Type**      | Type of workload (e.g., `Deployment`, `StatefulSet`) |
+| **Workload Name**      | Name of the workload (e.g., `redis`, `nginx-web`)    |
+| **Workload Namespace** | Namespace of the workload (e.g., `default`)          |
+| **Workload Replicas**  | Number of replicas for the workload (e.g., `3`)      |
 
 ## Commitment to Privacy and Security
 
