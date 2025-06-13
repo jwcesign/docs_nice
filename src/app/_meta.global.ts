@@ -25,7 +25,6 @@ export default {
         items: {
           workload_config: {},
           workload_diversity: {},
-          node_pod_evictor: {},
           keep_part_nodes: {},
           node_template_configuration: {}
         }
@@ -41,6 +40,11 @@ export default {
           aws_marketplace_subscription: {},
           upgrade_guide: {},
           uninstall: {}
+        }
+      },
+      concepts: {
+        items: {
+          node_pod_evictor: {}
         }
       },
       tips: {
