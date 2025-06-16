@@ -2,6 +2,9 @@
 title: April 2025 - V1.10.0
 ---
 
+import interruptionrate from './img/1-10-0-rate.png';
+import Image from 'next/image'
+
 # April 2025 - v1.10.0
 
 ### 🚀 **Highlights**
@@ -30,7 +33,12 @@ The next-generation prediction algorithm for spot instances is now available in 
 This enhancement helps you use spot instances more confidently, even for production workloads.
 
 The figure below demonstrates how the v2 algorithm proactively migrates workloads ahead of upcoming spot events, resulting in a significant reduction in spot-related disruptions.
-![img](./img/1-10-0-rate.png)
+<div style={{ textAlign: 'center', width: '100%' }}>
+  <Image src={interruptionrate} width="100%" alt="Spot interruption rate" />
+  <p style={{ marginTop: '8px', fontStyle: 'italic' }}>
+    Real-world Production data: fewer interruptions with predictive eviction
+  </p>
+</div>
 
 ### ⚙️ Enhancements
 
