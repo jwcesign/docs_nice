@@ -47,6 +47,11 @@ export default {
           node_pod_evictor: {}
         }
       },
+      troubleshooting: {
+        items: {
+          log_collection_for_troubleshooting: {}
+        }
+      },
       tips: {
         items: {
           ecr_auto_create: {},
