@@ -9,9 +9,9 @@ import Image from 'next/image'
 
 ### 🚀 **Highlights**
 
-#### **Ignore Specific Nodes During Optimization**
+#### **Excluding Specific Nodes from Optimization**
 
-In some scenarios, you may want CloudPilot AI to optimize only a subset of nodes—for example, when you're gradually rolling out optimizations to test stability, or when certain nodes are covered by Savings Plans or Reserved Instances.
+CloudPilot AI now supports the ability to exclude specific nodes from optimization processes. This is useful in scenarios such as gradually rolling out optimizations to test stability or when certain nodes are already covered by Savings Plans or Reserved Instances.
 
 To exclude nodes from optimization, simply add the annotation karpenter.sh/do-not-disrupt: "true" to the nodes you want to preserve. For example:
 ```sh
@@ -24,11 +24,11 @@ $ kubectl annotate node node-01.172.16.0.167 karpenter.sh/do-not-disrupt=true
 node/node-01.172.16.0.167 annotated
 ```
 
-Once annotated, the node will be excluded from any optimization actions. You can verify this behavior in the CloudPilot AI console.
+Once the annotation is applied, the node will be excluded from all optimization actions. This behavior can be verified in the CloudPilot AI console.
 
 #### **Enhanced Spot Instance Prediction Algorithm (v2)**
 
-The next-generation prediction algorithm for spot instances is now available in CloudPilot AI. It leverages more contextual data to anticipate upcoming spot interruptions, allowing your workloads to migrate ahead of time with greater reliability.
+CloudPilot AI introduces a new version of its spot instance prediction algorithm. It leverages more contextual data to anticipate upcoming spot interruptions, allowing your workloads to migrate ahead of time with greater reliability.
 
 This enhancement helps you use spot instances more confidently, even for production workloads.
 
