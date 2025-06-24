@@ -19,7 +19,8 @@ Instance types, on the other hand, are configurable and controlled by labels. By
 ## Key Features
 
 ### Instance Type Diversification
-This solution allows Karpenter to assign workloads to different instance types based on the specified label, `workload.cloudpilot.ai/diversity-instancetype=true`. This reduces the risk of simultaneous pod disruptions when nodes are evicted or terminated.
+
+This solution allows CloudPilot AI to assign workloads to different instance types based on the specified label, `workload.cloudpilot.ai/diversity-instancetype=true`. This reduces the risk of simultaneous pod disruptions when nodes are evicted or terminated.
 
 ### Optimized Pod Eviction Control
 Through the use of a custom controller, pod eviction logic has been enhanced. This ensures that workloads with the same instance type are not scheduled to the same node, reducing the chances of simultaneous interruptions.
