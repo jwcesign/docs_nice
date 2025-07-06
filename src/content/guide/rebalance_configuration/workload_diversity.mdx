@@ -4,41 +4,112 @@ title: Workload Diversity Guide
 
 # Workload Diversity Guide
 
-This document outlines the design and implementation of a solution for reducing service disruption by diversifying instance types across workloads in your cluster. By configuring workloads to include the `workload.cloudpilot.ai/diversity-instancetype=true` label, you can reduce the probability of simultaneous interruptions by ensuring that your workloads are spread across different instance types.
+Service disruptions in Kubernetes are more likely when multiple pods from the same workload are scheduled on identical infrastructure components — such as the same node or the same instance type within a single AZ.
 
-In our system, we handle two types of diversity:
+CloudPilot AI mitigates this risk by employing intelligent workload distribution strategies that automatically spread pods across diverse nodes and instance types. This improves both resilience and availability. The solution provides two key diversification mechanisms:
+- **Node Diversity**: Automatically distributes pods across multiple nodes to prevent node-level failures from affecting entire workloads
+- **Instance Type Diversity**: Schedules pods on different instance types to mitigate risks associated with instance-type-specific issues, particularly spot instance interruptions
 
-1. **Different Node Types (Built-in)**
-
-The system supports multiple node types, which are built-in and preconfigured. These nodes are part of the underlying architecture, ensuring varied workloads can be handled efficiently.
-
-2. **Different Instance Types (Controlled via Labels)**
-
-Instance types, on the other hand, are configurable and controlled by labels. By applying different labels, you can manage and allocate instance types based on your specific requirements. This approach gives you flexibility in how resources are provisioned and utilized within the system.
+This approach significantly improves application resilience. The system operates transparently through Kubernetes-native scheduling mechanisms and requires minimal configuration changes to existing workloads. You can adjust the configuration based on your specific requirements and operational needs.
 
 ## Key Features
 
-### Instance Type Diversification
+### Node Diversity
 
-This solution allows CloudPilot AI to assign workloads to different instance types based on the specified label, `workload.cloudpilot.ai/diversity-instancetype=true`. This reduces the risk of simultaneous pod disruptions when nodes are evicted or terminated.
+If your workload has two or more replicas, CloudPilot AI provisions at least two nodes and distributes the pods across them. This feature is enabled by default.
 
-### Optimized Pod Eviction Control
-Through the use of a custom controller, pod eviction logic has been enhanced. This ensures that workloads with the same instance type are not scheduled to the same node, reducing the chances of simultaneous interruptions.
+Here is an example:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inflate
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: inflate
+  template:
+    metadata:
+      labels:
+        app: inflate
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: karpenter.sh/capacity-type
+                    operator: Exists
+      containers:
+      - image: public.ecr.aws/eks-distro/kubernetes/pause:3.2
+        name: inflate
+        resources:
+          requests:
+            cpu: 250m
+            memory: 250Mi
+```
 
-### Webhook Integration
-A webhook component is used to patch the current pod and notify the scheduler, preventing node scheduling to the same instance type. This further helps mitigate the risk of simultaneous pod disruptions.
+Apply this YAML and check the pod nodes. You will see different nodes:
+```sh
+# kubectl get po -lapp=inflate -owide
+NAME                       READY   STATUS    RESTARTS      AGE   IP            NODE                                        NOMINATED NODE   READINESS GATES
+inflate-658b958b9f-57qvj   1/1     Running   0             10s   10.0.42.207   ip-10-0-33-24.us-east-2.compute.internal    <none>           <none>
+inflate-658b958b9f-ljb7h   1/1     Running   0             10s   10.0.24.64    ip-10-0-21-104.us-east-2.compute.internal   <none>           <none>
+```
+
+### Instance Type Diversity
+
+The same spot instance type typically experiences interruptions at the same time within a given Availability Zone. To reduce the impact of such interruptions, CloudPilot AI allows you to distribute a workload’s pods (such as those in a Deployment or StatefulSet) across different instance types by applying the label `workload.cloudpilot.ai/diversity-instancetype=true`.
+
+Here is an example:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inflate
+  labels:
+    workload.cloudpilot.ai/diversity-instancetype: "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: inflate
+  template:
+    metadata:
+      labels:
+        app: inflate
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: karpenter.sh/capacity-type
+                    operator: Exists
+      containers:
+      - image: public.ecr.aws/eks-distro/kubernetes/pause:3.2
+        name: inflate
+        resources:
+          requests:
+            cpu: 250m
+            memory: 250Mi
+```
+
+Apply this YAML and check the pod nodes. You will see different instance types:
+```sh
+# kubectl get pods -lapp=inflate -o custom-columns="NAME:.metadata.name,NODE:.spec.nodeName,INSTANCE_TYPE:.spec.nodeName" | grep -v "NODE" | while read name node rest; do if [ ! -z "$node" ]; then instance_type=$(kubectl get node $node -o jsonpath='{.metadata.labels.node\.kubernetes\.io/instance-type}' 2>/dev/null); echo "$name -> $node -> $instance_type"; fi; done
+inflate-658b958b9f-5v6t -> ip-10-0-3-179.us-east-2.compute.internal -> t2.medium
+inflate-658b958b9f-9ock -> ip-10-0-20-81.us-east-2.compute.internal -> t3.large
+```
 
 ## How It Works
 
 ### Overview
-The core design of this solution is to move the control logic into a dedicated controller. This controller utilizes a webhook component that applies patches to the pod, signaling the scheduler to avoid scheduling workloads on the same node. The logic is focused on minimizing simultaneous pod disruptions by spreading workloads across different instance types.
 
-### Test Setup
-1. **Controller**: The controller evicts pods every 30 seconds if the pod is scheduled on the same node. This simulates the behavior of eviction in the event of node instability or termination.
+The core design of this solution is to move the control logic into a dedicated controller. This controller utilizes a webhook component that applies patches to the pod, signaling the scheduler to avoid scheduling workloads on the same node or instance type.
 
-2. **Node Selection**: The deployment's label selector is configured to force workloads to target the same node, allowing you to verify the eviction process.
+1. **Controller**: TThe controller runs every 30 seconds and evicts pods from a workload if multiple pods are scheduled on the same instance type. This behavior is enabled when the owning Deployment or StatefulSet has the label `workload.cloudpilot.ai/diversity-instancetype=true`.
+2. **Webhook**: The webhook uses an informer to monitor the workloads' pod distribution and patches the appropriate affinity/anti-affinity rules to control the scheduling result.
 
-### Expected Outcome
-After the controller completes its eviction cycle, pods are successfully scheduled on different instance types, preventing simultaneous node disruptions. The controller will skip further eviction cycles once a pod has been successfully rescheduled.
-
-For configuration assistance or advanced use cases, consult the CloudPilot AI technical team.
+For configuration guidance or advanced use cases, please contact the CloudPilot AI support team.
