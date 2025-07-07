@@ -109,7 +109,7 @@ inflate-658b958b9f-9ock -> ip-10-0-20-81.us-east-2.compute.internal -> t3.large
 
 The core design of this solution is to move the control logic into a dedicated controller. This controller utilizes a webhook component that applies patches to the pod, signaling the scheduler to avoid scheduling workloads on the same node or instance type.
 
-1. **Controller**: TThe controller runs every 30 seconds and evicts pods from a workload if multiple pods are scheduled on the same instance type. This behavior is enabled when the owning Deployment or StatefulSet has the label `workload.cloudpilot.ai/diversity-instancetype=true`.
+1. **Controller**: The controller runs every 30 seconds and evicts pods from a workload if multiple pods are scheduled on the same instance type. This behavior is enabled when the owning Deployment or StatefulSet has the label `workload.cloudpilot.ai/diversity-instancetype=true`.
 2. **Webhook**: The webhook uses an informer to monitor the workloads' pod distribution and patches the appropriate affinity/anti-affinity rules to control the scheduling result.
 
 For configuration guidance or advanced use cases, please contact the CloudPilot AI support team.
