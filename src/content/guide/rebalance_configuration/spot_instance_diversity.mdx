@@ -1,0 +1,37 @@
+---
+title: Improving Cluster Resilience with Spot Instance Diversity Management
+---
+
+# Improving Cluster Resilience with Spot Instance Diversity Management
+
+This document outlines a feature designed to enhance Kubernetes cluster resilience when leveraging Spot instances. By intelligently distributing workloads across heterogeneous instance types, the system reduces operational risks while maintaining cost-effectiveness.
+
+## Key Features
+
+### Automated Instance Type Diversification
+CloudPilot AI dynamically distributes workloads across multiple Spot instance types (e.g., `m5`, `t3`, `c5`) within its built-in node provision strategy. This reduces the possibility of simultaneous interruptions and improves cluster resilience even during sudden Spot market volatility.
+
+### Cost-Stability Balance
+Achieves an equilibrium between Spot instance cost savings and workload reliability. CloudPilot AI adapts to real-time Spot instance market conditions without requiring manual intervention.
+
+## How It Works
+
+The core logic is implemented in the optimizer component, which monitors the distribution and provisions diverse instance types. Here is one example:
+
+1. **Initial State Analysis**
+   The system evaluates current cluster composition. For example:
+   | Instance Type | Allocation |
+   |---------------|------------|
+   | `m5.large`    | 60%        |
+   | `t3.medium`   | 20%        |
+   | `c5.xlarge`   | 20%        |
+
+2. **Gradual Redistribution**
+   New workloads are redirected toward underrepresented instance types. Over time, the distribution evolves toward:
+   | Instance Type | Allocation |
+   |---------------|------------|
+   | `m5.large`    | 40%        |
+   | `t3.medium`   | 30%        |
+   | `c5.xlarge`   | 30%        |
+
+The actual performance depends on real-time Spot market conditions and regional instance availability. This feature is not enabled by default. Contact the CloudPilot AI Engineering Team for activation.
