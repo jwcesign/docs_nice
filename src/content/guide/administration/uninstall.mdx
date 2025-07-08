@@ -64,24 +64,28 @@ After verifying all nodes have been successfully evicted and the cluster remains
 ## More
 
 ### Troubleshooting Improper Uninstallation
-**Symptoms**:
-- Pod creation failures.
-- NodeClaim operations suspended (nodes cannot be created/deleted).
 
-**Cause**: Direct deletion of the `cloudpilot` namespace without following proper procedures.
+During the uninstallation process, you may encounter the following issues if the correct steps are not followed:
+- Pod creation failures
+- Nodes created by CloudPilot AI remain orphaned (nodes cannot be created or deleted)
 
-**Resolution**:
-1. Remove the orphaned webhook configuration:
+This typically occurs when the `cloudpilot` namespace is deleted directly without following the proper uninstallation procedure.
+
+To resolve this issue:
+
+1. **Remove the orphaned webhook configuration:**
    ```bash
    kubectl delete mutatingwebhookconfigurations.admissionregistration.k8s.io cloudpilot-webhook
    ```
-2. Reinstall the CloudPilot agent using the script from the **Add cluster** button:
+
+2. **Reinstall the CloudPilot agent using the script from the Add Cluster button:**
    ```bash
    export CLOUDPILOT_API_KEY=xxx
    export CLOUD_PROVIDER=aws
    curl --silent "https://onboard.cloudpilot.ai/manifest/v1.10.0/phase1/cloudpilot-agent.yaml" | envsubst | kubectl apply -f -
    ```
-3. Reinstall CloudPilot fully using the **Start Saving** button script.
+
+3. **Reinstall CloudPilot fully using the Start Saving button script:**
    ```bash
    export CLOUDPILOT_API_KEY=xxx
    export CLOUD_PROVIDER=aws
@@ -91,8 +95,37 @@ After verifying all nodes have been successfully evicted and the cluster remains
    export AWS_PARTITION=aws
    curl --silent "https://onboard.cloudpilot.ai/manifest/v1.10.0/eks/phase2/install.sh" | bash
    ```
-4. Re-run the normal uninstallation process.
 
----
+4. **Re-run the normal uninstallation process.**
+
+### Uninstall Fails Due to NodeClaim
+
+During uninstallation, the script may fail with the following error:
+```bash
+Error: nodeclaim exist xxx, please return to the previous step and delete optimized nodes first
+```
+
+This usually happens in test clusters with limited capacity — when CloudPilot components are evicted, they can't be rescheduled, causing new nodeclaims to be created repeatedly.
+
+To resolve this:
+1. **Expand cluster reserved resources**
+
+    Go back to step 2 and increase the number of available nodes.
+
+2. **Reduce CloudPilot resource usage**
+
+    Reduce the replica count and resource requests to ensure the cluster can handle the load during uninstallation.
+
+    ```bash
+    # Reduce the number of replicas
+    kubectl -n cloudpilot scale deploy cloudpilot-aws-optimizer --replicas 1
+    ```
+    ```bash
+    # Reduce resource request/limit
+    kubectl -n cloudpilot patch deploy cloudpilot-aws-optimizer -p '{"spec":{"template":{"spec":{"containers":[{"name":"controller","resources":{"requests":{"cpu":"300m","memory":"300Mi"},"limits":{"cpu":"500m","memory":"500Mi"}}}]}}}}'
+    ```
+
+    Then go back to step 3 and continue the uninstall process.
+
 
 If issues persist, contact CloudPilot Technical Support immediately for assistance.
