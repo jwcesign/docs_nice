@@ -2,7 +2,42 @@ import { SLACK_INVITE_LINK } from '../../constant.ts'
 
 # Introduction
 
-**CloudPilot AI** is the **#1st** managed **Karpenter** cloud service with many enhancements. **CloudPilot AI** provides a very easy way to optimize your cloud spending and provides organizations with advanced FinOps workflows and cost governance.
+## What's CloudPilot AI
+
+**CloudPilot AI** is the **#1 managed Karpenter** cloud service with extensive enhancements. **CloudPilot AI** provides a simple way to optimize your cloud spending while delivering advanced FinOps workflows and cost governance for organizations.
+
+We've implemented numerous additional features on top of Karpenter. With just two steps, **CloudPilot AI** can migrate most or even all of your workloads to Spot instances, delivering an average cost savings of 67%.
+
+### Key capabilities include:
+
+#### Intelligent Spot Prediction
+
+Automatically shifts workloads to Spot Instances while maintaining stability. CloudPilot AI uses a time-series prediction model trained on large volumes of node data to forecast Spot interruptions up to 45 minutes in advance.
+
+#### Mixed Scheduling Policies for Critical Workloads
+
+Easily configure mission-critical workloads to run on a mix of On-Demand and Spot Instances, achieving a balanced trade-off between savings and reliability.
+
+#### Event Observability for Karpenter
+
+Gain visibility into Karpenter's decisions with detailed insights into why nodes are created, deleted, or consolidated—making it easier to troubleshoot and optimize autoscaling behavior.
+
+### Upcoming Features (In Development):
+
+#### Pod Rightsizing
+
+Dynamically adjusts pod resource requests based on real usage to reduce waste.
+
+#### LiveMigration
+
+Enables seamless pod migration between nodes without downtime, improving availability during rebalancing or scaling events.
+
+## Supported Cloud Providers
+
+- Amazon EKS
+- Alibaba Cloud ACK
+- Google Cloud GKE (coming soon)
+- Azure AKS (coming soon)
 
 ## Additional and Community Resources
 
@@ -25,3 +60,8 @@ import { SLACK_INVITE_LINK } from '../../constant.ts'
   </Cards.Card>
 </Cards>
 
+## What’s Next
+
+- [Read-only agent](guide/security/permissions_required.mdx#phase-1-read-only-permissions)
+- [Workload Configuration](guide/rebalance_configuration/workload_config.mdx)
+- [Connect to the AWS Marketplace](guide/administration/aws_marketplace_subscription.mdx)
