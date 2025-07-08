@@ -8,32 +8,18 @@ import { SLACK_INVITE_LINK } from '../../constant.ts'
 
 We've implemented numerous additional features on top of Karpenter. With just two steps, **CloudPilot AI** can migrate most or even all of your workloads to Spot instances, delivering an average cost savings of 67%.
 
-## Key capabilities include:
+Key capabilities include:
+- **Intelligent Spot Prediction**: Automatically shifts workloads to Spot Instances while maintaining stability. CloudPilot AI uses a time-series prediction model trained on large volumes of node data to forecast Spot interruptions up to 45 minutes in advance.
 
-### Intelligent Spot Prediction
+- **Mixed Scheduling Policies for Critical Workloads**: Easily configure mission-critical workloads to run on a mix of On-Demand and Spot Instances, achieving a balanced trade-off between savings and reliability.
 
-Automatically shifts workloads to Spot Instances while maintaining stability. CloudPilot AI uses a time-series prediction model trained on large volumes of node data to forecast Spot interruptions up to 45 minutes in advance.
+- **Event Observability for Karpenter**: Gain visibility into Karpenter's decisions with detailed insights into why nodes are created, deleted, or consolidated—making it easier to troubleshoot and optimize autoscaling behavior.
 
-### Mixed Scheduling Policies for Critical Workloads
+- **Pod Rightsizing(Comming soon)**: Dynamically adjusts pod resource requests based on real usage to reduce waste.
 
-Easily configure mission-critical workloads to run on a mix of On-Demand and Spot Instances, achieving a balanced trade-off between savings and reliability.
+- **LiveMigration(Comming soon)**: Enables seamless pod migration between nodes without downtime, improving availability during rebalancing or scaling events.
 
-### Event Observability for Karpenter
-
-Gain visibility into Karpenter's decisions with detailed insights into why nodes are created, deleted, or consolidated—making it easier to troubleshoot and optimize autoscaling behavior.
-
-## Upcoming Features (In Development):
-
-### Pod Rightsizing
-
-Dynamically adjusts pod resource requests based on real usage to reduce waste.
-
-### LiveMigration
-
-Enables seamless pod migration between nodes without downtime, improving availability during rebalancing or scaling events.
-
-## Supported Cloud Providers
-
+We support the following cloud providers:
 - Amazon EKS
 - Alibaba Cloud ACK
 - Google Cloud GKE (coming soon)
