@@ -1,0 +1,26 @@
+---
+title: CloudPilot AI Components Details
+---
+
+# CloudPilot AI Components Details
+
+This documentation provides a technical overview of CloudPilot AI's architectural components, detailing their core functions and operational behavior within Kubernetes environments. It serves as a reference for engineers who want to deep dive into CloudPilot AI.
+
+## Component Details
+
+CloudPilot AI consists of six core components that work together to optimize cluster costs while ensuring workload stability. Each component has specific responsibilities and resource requirements designed for efficient cluster management.
+
+| Component | Kind | Resource Requirements | Functions |
+|-----------|------|----------------------|-----------|
+| **cloudpilot-agent** | Deployment | 1 Replica<br/>250m CPU / 500MiB Memory | Pushes nodes/resource requests information for optimization planning and handles cluster registration with the CloudPilot AI platform. |
+| **cloudpilot-optimizer** | Deployment | 2 Replicas<br/>1000m CPU / 1GiB Memory (each) | Performs node operations based on configuration, including node draining, deletion, and creation to optimize cluster resource utilization and costs. |
+| **cloudpilot-controller** | Deployment | 1 Replica<br/>300m CPU / 500MiB Memory | Synchronizes configuration from server side to local clusters, applies custom resources, labels workloads for webhook patching, evicts pods to meet configuration requirements, and drains nodes with high interruption rates. |
+| **cloudpilot-webhook** | Deployment | 2 Replicas<br/>100m CPU / 100MiB Memory (each) | Mutates pod creation requests by patching pod affinity and anti-affinity rules to enhance workload stability and distribution. |
+| **cloudpilot-workload-log-collector** | Deployment | 1 Replica<br/>100m CPU / 100MiB Memory | Collects CloudPilot AI-specific component logs for troubleshooting and operational monitoring. |
+| **cloudpilot-spot-handler** | DaemonSet | 50m CPU / 100MiB Memory (per node) | Retrieves spot instance interruption notifications and immediately notifies the cloudpilot-optimizer to launch replacement instances. |
+
+## Support
+
+These components work together to provide a comprehensive cluster optimization solution. The agent handles communication with the CloudPilot AI platform, while the optimizer and controller manage cluster resources based on received configurations. The webhook ensures optimal pod placement, and the spot handler provides proactive management of spot instance interruptions.
+
+For further questions, feel free to reach out to us through our [Slack channel](https://join.slack.com/t/cloudpilotaicommunity/shared_invite/zt-37rwpf8k7-Rx4BjrhuWtk9U0MXBKYL7A).
