@@ -40,7 +40,8 @@ export default {
         items: {
           aws_marketplace_subscription: {},
           upgrade_guide: {},
-          uninstall: {}
+          uninstall: {},
+          poc_process: {}
         }
       },
       concepts: {

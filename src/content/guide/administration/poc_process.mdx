@@ -1,0 +1,35 @@
+# CloudPilot AI POC Process
+
+This guide outlines the POC process for evaluating CloudPilot AI cluster optimization effectiveness and stability through systematic data collection and analysis.
+
+## Prerequisites
+
+Ensure CloudPilot AI is installed and configured in your target cluster before starting.
+
+## POC Process
+
+The complete POC requires approximately 15 days with phased migration:
+
+**Phase 1 - Workload Migration (3 days):** Migrate representative workloads across backend, frontend, and middleware tiers to establish baseline stability metrics.
+
+**Phase 2 - Node Migration (12 days):** Execute gradual node migration: single node (2 days) → 3 nodes (2 days) → 50% of nodes (5 days) → all remaining nodes (3 days). Validate stability at each stage.
+
+## Stability Assessment
+
+Monitor different workload types appropriately:
+- **Web APIs:** Use external monitoring to ensure endpoint availability ([reference](https://docs.cloudpilot.ai/guide/tips/monitor_availability))
+- **Databases:** Run on non-spot instances to avoid migration-related failures  
+- **Controllers:** Monitor pod pending states—ensure none remain pending \>2 minutes
+- **Jobs:** Track retry ratios, maintain \<10% for acceptable stability
+
+## Optimization Evaluation
+
+**Before POC:** Configure workload/Node Pool/Node Class specifications, review optimization plans, and document predicted cost savings.
+
+**After POC:** Compare actual costs against pre-POC projections to validate prediction accuracy.
+
+## Next Steps
+
+Upon satisfactory results, extend CloudPilot AI to additional clusters. Successful POC demonstrates improved scaling efficiency, reduced waste, and measurable cost reduction.
+
+Contact CloudPilot AI support for technical assistance during the POC process.
