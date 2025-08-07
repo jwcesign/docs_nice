@@ -26,8 +26,10 @@ export default {
           workload_config: {},
           workload_diversity: {},
           keep_part_nodes: {},
+          node_configuration: {},
           node_template_configuration: {},
-          spot_instance_diversity: {}
+          spot_instance_diversity: {},
+          disable_workload_uploading: {}
         }
       },
       security: {
