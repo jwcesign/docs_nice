@@ -1,71 +1,90 @@
 ---
-title: Prepare the terminal environment
+title: Prepare the Operation Environment
 ---
 
-# Prepare the Terminal Environment
+# Prepare the Operation Environment
 
-This guide helps you set up a terminal environment to interact with your Kubernetes clusters and configure cloud credentials required for CloudPilot AI.
+This guide helps you set up an operation environment to install/upgrade CloudPilot AI.
 
 ## Prerequisites
 
-* A Bash shell (macOS, Linux) or access to a Kubernetes cluster.
-* `kubectl`, `aws` CLI, and/or `aliyun` CLI installed and configured in your environment.
-* For Alibaba Cloud: `jq` must be installed for processing JSON outputs.
+* Cloud provider account credentials (Access Key/Secret Key)
+* Docker or Kubernetes access
+* Basic familiarity with command-line operations
 
-## Step 1: Launch a Bash Shell in Kubernetes (if needed)
+## Step 1: Launch the Container Environment
 
-If your local environment lacks a Bash shell, you can start a helper pod with all dependencies pre-installed:
+### Option 1: Docker Environment
 
-```sh
-kubectl run helper --image=public.ecr.aws/cloudpilotai/helper:v0.3.0 -it --rm --restart=Never -- /bin/bash
+Launch a container with all required tools pre-installed:
+
+```bash
+docker run -it --restart=unless-stopped --name cloudpilotai \
+  public.ecr.aws/cloudpilotai/installationenv:latest \
+  bash
 ```
 
-## Step 2: Configure AWS Credentials
+### Option 2: Kubernetes Pod
 
-To work with AWS EKS clusters:
+For environments without Docker:
 
-```sh
+```bash
+kubectl run helper --image=public.ecr.aws/cloudpilotai/installationenv:latest \
+  -it --rm --restart=Never -- /bin/bash
+```
+
+## Step 2: Configure Cloud Provider Credentials
+
+### AWS Configuration
+
+Configure AWS credentials:
+
+```bash
 aws configure
 ```
 
-Provide the following when prompted:
-
+Provide your credentials when prompted:
 ```
-AWS Access Key ID [None]: <your_ak>
-AWS Secret Access Key [None]: <your_sk>
-Default region name [None]: us-east-2
-Default output format [None]:
+AWS Access Key ID: <your_access_key>
+AWS Secret Access Key: <your_secret_key>
+Default region name: us-east-2
+Default output format: json
 ```
 
-Then, update your kubeconfig:
+Update kubeconfig for EKS:
 
-```sh
+```bash
 mkdir -p ~/.kube
 export KUBECONFIG=~/.kube/config
 aws eks update-kubeconfig --name <cluster_name> --region us-east-2
 ```
 
-## Step 3: Configure Alibaba Cloud Credentials
+**Verify setup:**
+```bash
+aws sts get-caller-identity
+kubectl get nodes
+```
 
-To work with Alibaba Cloud ACK clusters:
+### Alibaba Cloud Configuration
 
-```sh
+Configure Alibaba Cloud credentials:
+
+```bash
 aliyun configure
 ```
 
 Follow the prompts:
-
 ```
-Access Key ID []: <your_ak>
-Access Key Secret []: <your_sk>
-Default Region ID []: shenzhen
-Default Output Format [json]: json
-Default Language [zh|en]: en
+Access Key ID: <your_access_key>
+Access Key Secret: <your_secret_key>
+Default Region ID: cn-shenzhen
+Default Output Format: json
+Default Language: en
 ```
 
-Retrieve and apply the kubeconfig:
+Setup kubeconfig for ACK:
 
-```sh
+```bash
 mkdir -p ~/.kube
 export KUBECONFIG=~/.kube/config
 export CLUSTER_NAME=<cluster_name>
@@ -73,6 +92,12 @@ export CLUSTER_ID=$(aliyun cs GET /clusters | jq -r --arg CLUSTER_NAME "$CLUSTER
 aliyun cs GET /k8s/$CLUSTER_ID/user_config | jq -r '.config' > $KUBECONFIG
 ```
 
-## More
+**Verify setup:**
+```bash
+aliyun sts GetCallerIdentity
+kubectl get nodes
+```
 
-After completing the credential and kubeconfig setup, your environment is ready for deploying or managing workloads using CloudPilot AI.
+## Next Steps
+
+Your environment is now configured and ready for CloudPilot AI installation or upgrade operations.
