@@ -27,7 +27,6 @@ Here’s an example of how to configure different workloads with the settings me
 2. Enable **Rebalanceable** for the **nginx** workload, and set its **Min Non-Spot Replicas** to **5**, ensuring there are at least 5 non-spot replicas for nginx at all times.
 3. Set **mysql** to be **Rebalanceable** and **Non Spot Friendly**, allowing it to be scheduled on spot instances as needed.
 
-
 ### Example Configuration:
 - **log-server**: Non Rebalanceable
 - **nginx**: Rebalanceable, Min Non-Spot Replicas = 5
