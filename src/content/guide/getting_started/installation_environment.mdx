@@ -94,7 +94,24 @@ aliyun cs GET /k8s/$CLUSTER_ID/user_config | jq -r '.config' > $KUBECONFIG
 
 **Verify setup:**
 ```bash
-aliyun sts GetCallerIdentity
+kubectl get nodes
+```
+
+## Alternative Setup Using AWS CloudShell
+
+If you don't have access to a terminal environment for AWS clusters, you can use AWS CloudShell to launch the operational environment. Execute the following command to set up your containerized workspace:
+```sh
+docker run -it --restart=unless-stopped --network host --name cloudpilotai \
+  -v ~/.kube:/root/.kube/ \
+  -e AWS_CONTAINER_CREDENTIALS_FULL_URI=http://localhost:1338/latest/meta-data/container/security-credentials \
+  -e AWS_CONTAINER_AUTHORIZATION_TOKEN="$AWS_CONTAINER_AUTHORIZATION_TOKEN" \
+  -e AWS_REGION="$AWS_REGION" \
+  public.ecr.aws/cloudpilotai/installationenv:latest \
+  bash
+```
+
+**Verify setup:**
+```bash
 kubectl get nodes
 ```
 
