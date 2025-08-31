@@ -1,0 +1,37 @@
+---
+title: July 2025 - V1.12.0
+---
+
+import multinodepool from './img/multinodepool.png';
+import Image from 'next/image'
+
+# July 2025 - v1.12.0
+
+### 🚀 **Highlights**
+
+#### **Flexible Resource Management Through Multiple Node Pools**
+
+CloudPilot AI now supports multiple node pools, enabling fine-grained resource allocation and intelligent scheduling:
+* Run online and offline services on separate node pools to ensure workload isolation and improve system reliability
+* Allocate compute resources to different teams to minimize interference between them.
+* Optimize multi-architecture environments to lower costs by prioritizing ARM64 spot instances and automatically falling back to AMD64 when needed.
+
+This feature enables advanced use cases such as resource isolation and prioritizing resource allocation for different workloads. The following example demonstrates how multiple node pools can be used for resource isolation and workload prioritization::
+<div style={{ textAlign: 'center', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
+  <Image src={multinodepool} width="100%" alt="Spot interruption rate" />
+</div>
+
+### ⚙️ Enhancements
+
+* Introduced a new ML-based spot prediction strategy to improve spot instance selection accuracy and forecasting efficiency.
+
+### 🛠️ Bug Fixes
+
+* Prevented draining workload pods on non–CloudPilot AI managed nodes, even with instance-type diversity configured.
+* Fixed optimization plan calculation when kube-reserved resources are configured.
+* Resolved configuration issues after upgrading CloudPilot AI components, preventing node drifting.
+* Ignored certain AWS instance families (e.g., A1, A2) to ensure successful node launches.
+
+These updates further improve CloudPilot AI’s overall reliability and user experience. For questions or support, [join our Slack community](https://inviter.co/cloudpilot-ai-community)
+
+Stay tuned for more updates! 🚀

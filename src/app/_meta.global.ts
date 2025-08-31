@@ -70,6 +70,7 @@ export default {
     type: 'page',
     title: 'Changelog',
     items: {
+      '1.12.0': {},
       '1.10.0': {},
       '1.9.2': {},
       '1.9.1': {},
