@@ -1,0 +1,53 @@
+---
+title: June 2025 - V1.11.0
+---
+
+import events from './img/1-11-0-events.png';
+import Image from 'next/image'
+
+# June 2025 - v1.11.0
+
+✨✨✨ This release introduces new features and important bug fixes to improve performance and reliability. Here’s what’s changed:
+
+### 🚀 **Highlights**
+
+#### **Node Operation Events with Contextual Information**
+
+CloudPilot AI now transmits all node-related events to the console. Each event includes the reason and timestamp, providing full context for every node change.
+
+<div style={{ textAlign: 'center', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
+    <Image src={events} width="100%" alt="Node Operation Events" />
+</div>
+
+#### **Workload Log Collector Component**
+
+CloudPilot AI now introduces the Workload Log Collector component, which provides better support for troubleshooting issues related to CloudPilot AI components. When updating or installing CloudPilot AI, you can choose to deploy this component.
+
+Once deployed, it collects logs from CloudPilot AI components and stores them in a Persistent Volume (PV), simplifying issue diagnosis and resolution.
+
+#### **Workload Diversity**
+
+CloudPilot AI now supports the Workload Diversity feature. This feature distributes a workload’s Pods across different Spot instance types to improve availability and stability.
+When enabled, CloudPilot AI ensures that the workload’s Pods are always spread across at least two different instance types, preventing outages in extreme cases where all instances of the same type are reclaimed simultaneously.
+
+You can enable this feature by adding the label workload.cloudpilot.ai/diversity-instancetype=true to the desired workload.
+
+```
+kubectl label deployment <your-deployment-name> workload.cloudpilot.ai/diversity-instancetype=true
+```
+
+### ⚙️ Enhancements
+
+* More comprehensive alerting: When your cluster encounters an issue, CloudPilot AI takes immediate action.
+* Optimized Webhook configuration: Key components can bypass the Webhook to improve overall system stability.
+* Support for Disruption settings: You can now configure Disruption settings.
+* Improved Pod eviction order: Enhances availability for critical workloads when a node is evicted.
+
+### 🛠️ Bug Fixes
+
+* Fixed a missing permission for PV resources in the Agent component from the previous release.
+* Fix the potential failure issue during proactive eviction of Spot instances.
+
+These updates further improve CloudPilot AI’s overall reliability and user experience. For questions or support, [join our Slack community](https://inviter.co/cloudpilot-ai-community)
+
+Stay tuned for more updates! 🚀
