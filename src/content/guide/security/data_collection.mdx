@@ -33,6 +33,7 @@ CloudPilot AI gathers essential node details, including:
 | **Pricing Model**           | Pricing model (e.g., `on-demand` or `spot`)                                                                                                        |
 | **Zone**                    | Availability zone (e.g., `us-east-2a`)                                                                                                             |
 | **Spot Interruption Event** | Information about spot instance interruptions (e.g., `spot instance ip-10-0-2-10.us-east-2.compute.internal` interrupted at `2023-06-28 16:00:00`) |
+| **Node Operation Event**    | Information about node/VM operations, including creation and deletion                                                                              |
 
 You can retrieve node information using the following command:
 
@@ -53,6 +54,15 @@ CloudPilot AI tracks the following workload data:
 | **Workload Name**      | Name of the workload (e.g., `redis`, `nginx-web`)    |
 | **Workload Namespace** | Namespace of the workload (e.g., `default`)          |
 | **Workload Replicas**  | Number of replicas for the workload (e.g., `3`)      |
+
+
+Also, include the resource utilization for these dimensions:
+
+| Parameter             | Description                                                                     |
+| --------------------- | ------------------------------------------------------------------------------- |
+| **Cluster Level**     | Provisioned, Allocatable, Requested, and Used Resources (CPU/Memory)            |
+| **Node Level**        | Provisioned, Allocatable, Requested, and Used Resources (CPU/Memory)            |
+| **Workload Level**    | Requested and Used Resources (CPU/Memory) of workloads(Deployment/StatefulSet)  |
 
 ## Commitment to Privacy and Security
 
