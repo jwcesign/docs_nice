@@ -17,6 +17,7 @@ export default {
       getting_started: {
         items: {
           getting_started: {},
+          terraform: {},
           installation_environment: {},
           deploying_with_existing_user: {},
           get_apikeys: {}

@@ -1,0 +1,90 @@
+---
+title: Terraform
+---
+
+# Terraform
+
+This guide explains how to use the CloudPilot AI Terraform Provider to manage Amazon EKS clusters with automated cost optimization. The provider enables seamless integration of CloudPilot AI's optimization components into your infrastructure-as-code workflow.
+
+## Overview
+
+The CloudPilot AI Terraform Provider allows you to:
+
+- Automate the installation of agents and rebalancing components
+- Autoscale EKS cluster nodes through CloudPilot AI integration
+- Configure node settings for autoscaling environments
+- Optimize workload costs through rebalancing and spot instance management
+
+## Prerequisites
+
+Before using the Terraform Provider, ensure you have:
+
+* **[Terraform](https://developer.hashicorp.com/terraform/install)** - Version 1.0 or later
+* **[AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)** - Configured with credentials that have EKS cluster management permissions
+* **[kubectl](https://kubernetes.io/docs/tasks/tools/)** - For cluster operations and component management
+* **CloudPilot AI API Key** - See [Get API Keys](/guide/getting_started/get_apikeys) for setup instructions
+
+If you don't have an EKS cluster yet, refer to the [example cluster setup](https://github.com/cloudpilot-ai/examples/tree/main/clusters/eks-ondemand).
+
+## Example Configurations
+
+The following examples demonstrate different use cases for the Terraform Provider. Each example includes a complete `main.tf` file and detailed README.
+
+| Example | Description | Use Case |
+|---------|-------------|----------|
+| [`0_details`](https://github.com/cloudpilot-ai/terraform-provider-cloudpilotai/tree/main/examples/nodeautoscale/eks/0_details/) | Full-featured configuration with all options | Production setup with workload templates, nodeclasses, and complete configuration |
+| [`1_read-only_access`](https://github.com/cloudpilot-ai/terraform-provider-cloudpilotai/tree/main/examples/nodeautoscale/eks/1_read-only_access/) | Agent-only installation | Testing or monitoring without making optimization changes |
+| [`2_basic_rebalance`](https://github.com/cloudpilot-ai/terraform-provider-cloudpilotai/tree/main/examples/nodeautoscale/eks/2_basic_rebalance/) | Basic rebalance enabled | Simple cost optimization with workload rebalancing |
+| [`3_nodeclass_nodepool_rebalance`](https://github.com/cloudpilot-ai/terraform-provider-cloudpilotai/tree/main/examples/nodeautoscale/eks/3_nodeclass_nodepool_rebalance/) | Custom nodeclass and nodepool | Advanced node management with custom configurations |
+
+## Quick Start
+
+1. **Install and configure prerequisites:**
+    ```bash
+    # Configure AWS credentials
+    aws configure
+
+    # Verify access
+    aws sts get-caller-identity
+    ```
+
+2. **Create a Terraform configuration file:**
+    ```hcl
+    terraform {
+        required_providers {
+            cloudpilotai = {
+                source = "cloudpilot-ai/cloudpilotai"
+            }
+        }
+    }
+
+    provider "cloudpilotai" {
+        # ⚠️ Required
+        api_key = "sk-xxx"
+    }
+
+    resource "cloudpilotai_eks_cluster" "example" {
+        # ⚠️ Required
+        cluster_name = "my-eks-cluster"
+        # ⚠️ Required
+        region = "us-west-2"
+        # ⚠️ Required
+        restore_node_number = 2
+    }
+    ```
+
+3. **Initialize and apply:**
+    ```bash
+    terraform init
+    terraform plan
+    terraform apply
+    ```
+
+Refer to the [example configurations](#example-configurations) above for complete working examples.
+
+## Additional Resources
+
+- [Terraform Provider Registry](https://registry.terraform.io/providers/cloudpilot-ai/cloudpilotai/latest) - Full provider documentation
+- [GitHub Repository](https://github.com/cloudpilot-ai/terraform-provider-cloudpilotai) - Source code and examples
+- [GitHub Issues](https://github.com/cloudpilot-ai/terraform-provider-cloudpilotai/issues) - Report issues or request features
+- [Slack Community](https://join.slack.com/t/cloudpilotaicommunity/shared_invite/zt-37rwpf8k7-Rx4BjrhuWtk9U0MXBKYL7A) - Get help from the community
