@@ -1,0 +1,90 @@
+---
+title: October 2025 - V1.14.0
+---
+
+import progressive_migration from './img/1-14-0-progressive_migration.png';
+import workload_autoscaler from './img/1-14-0-workload_autoscaler.png';
+import Image from 'next/image'
+
+# October 2025 - V1.14.0
+
+✨✨✨ The most recent release brings some urgent new features and bug fixes that should enhance your experience. Check out what’s changed.
+
+### 🚀 **Highlights**
+
+#### **Progressive Migration**
+
+**CloudPilot AI** now supports **node-level gradual migration**, allowing users to progressively bring existing nodes under CloudPilot AI management without migrating all nodes at once.
+* Enables gradual node onboarding into CloudPilot AI management based on business and stability needs, following the pace of the PoC.
+* Supports maintaining normal operation of existing nodes during the migration process to avoid business interruptions.
+
+<div style={{ textAlign: 'center', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
+    <Image src={progressive_migration} width="100%" alt="Progressive Migration" />
+</div>
+
+#### **Workload Autoscaler**
+
+**CloudPilot AI** now supports the **Workload Autoscaler** component, which automatically analyzes each workload’s actual resource usage and dynamically adjusts its **Requests** and **Limits** configurations to achieve higher resource efficiency and cost savings.
+* Automatically adjusts workload **Requests** and **Limits** based on real resource usage.
+* Provides flexible configuration options to avoid updates during peak hours and minimize business impact.
+* Supports multiple update modes, including **InPlace**, to accommodate different business needs.
+* Offers powerful visualization to track each workload’s resource usage and adjustment history.
+* Supports multi-select and bulk operations, enabling one-click optimization for all workloads.
+
+<div style={{ textAlign: 'center', width: '100%', borderRadius: '8px', overflow: 'hidden' }}>
+    <Image src={workload_autoscaler} width="100%" alt="Workload Autoscaler" />
+</div>
+
+#### **Pod Mutation**
+
+**CloudPilot AI** introduces the new **Pod Mutation** feature, allowing users to select specific groups of workloads and inject custom configurations to optimize their scheduling and operation on **Spot instances**.
+* Supports selecting a group of workloads via the **PodMutation CR** and injecting specific configurations.
+* Supports injection of configurations such as **Node Affinity**, **Tolerations**, **Labels**, and **Annotations**.
+* Enables **workload-level gradual migration**, allowing workloads to be progressively brought under **CloudPilot AI** management.
+
+```yaml
+apiVersion: agent.cloudpilot.ai/v1alpha1
+kind: PodMutation
+metadata:
+  name: gradual-rebalance
+spec:
+  workloadSelector:
+    namespaces:
+      - test
+    kinds:
+      - Deployment
+  mutationAdd:
+    tolerations:
+      - key: "cloudpilot.ai/gradual-rebalance-only"
+        operator: "Exists"
+    nodeSelector:
+      "node.cloudpilot.ai/managed": "true"
+```
+
+#### **Terraform**
+
+**CloudPilot AI** now supports installation and configuration management via **Terraform**, making it easier for users to integrate CloudPilot AI into their existing **Infrastructure as Code (IaC)** workflows.
+* Provision and manage EKS clusters with CloudPilot AI integration
+* Automated agent and rebalance component installation
+* Node pool and node class management (including custom Karpenter JSON)
+* Workload cost optimization (rebalance, spot-friendly, min non-spot replicas)
+* Seamless AWS CLI and kubeconfig integration
+
+### ⚙️ Enhancements
+
+* The **Node Repair** feature will now remove some Pods from a node before removing the node itself, reducing the impact on workloads.
+* Optimized the **Simulation** computation logic, significantly reducing **Agent** CPU usage after a **Rebalance** is completed.
+* Optimized the issue where, in some cases, the **Optimizer** might evict interrupted **Spot** nodes too slowly due to **PDB** constraints.
+
+### 🛠️ Bug Fixes
+
+* Fixed an issue where the **Workload Diversity** feature could, in some cases, ignore existing OnDemand nodes and cause Pods to be rescheduled.
+* Fixed a caching latency issue in the **Webhook** component under certain conditions.
+* Fixed the display of **Zone-related information** in the Demo cluster.
+* Fixed inaccurate calculations for **Non-Spot Pods** of Workloads in some cases.
+* Fixed an issue where certain components could prematurely perform operations such as **Evict** during the **Rebalance** process.
+* Fixed synchronization issues for **cluster-related information** under certain conditions.
+
+These updates further improve CloudPilot AI’s overall reliability and user experience. For questions or support, [join our Slack community](https://inviter.co/cloudpilot-ai-community)
+
+Stay tuned for more updates! 🚀
