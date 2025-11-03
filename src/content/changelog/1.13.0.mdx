@@ -1,0 +1,41 @@
+---
+title: August 2025 - V1.13.0
+---
+
+# August 2025 - v1.13.0
+
+✨✨✨ The most recent release brings some urgent new features and bug fixes that should enhance your experience. Check out what’s changed.
+
+### 🚀 **Highlights**
+
+#### **Disable Workload Information Upload**
+
+CloudPilot AI now lets users decide whether to share workload information during deployment.
+By default, basic details like the workload’s name, namespace, and replica count are uploaded to CloudPilot AI to enable certain advanced configurations.
+If you prefer to keep your workload information private, you can disable all workload data uploads when deploying.
+
+#### **Node Repair**
+
+CloudPilot AI now supports Node Repair — when a node stays in a NotReady state for too long due to unknown reasons, CloudPilot AI will automatically evict the workloads on that node to other healthy nodes and remove the faulty one, ensuring cluster stability and availability.
+
+You can enable the Node Repair feature with the following command:
+
+```sh
+kubectl set env deployment/cloudpilot-controller -n cloudpilot ENABLE_NODE_REPAIR=true
+```
+
+### ⚙️ Enhancements
+
+* Added **tolerations** to the *spot-handler* component to ensure it can run properly even on nodes with unknown taints.
+* Introduced **cluster-level resource usage collection and analytics** to better support optimization strategies.
+* The **simulation** component now supports *Workload Configuration* options such as `Min Non-Spot Replicas` and `SpotFriend`.
+
+### 🛠️ Bug Fixes
+
+* Fixed an issue where **Workload Diversity** could cause continuous pod restarts in certain situations.
+* Fixed an issue where **node information** was sometimes collected incompletely.
+* Fixed a **permission issue** caused by the Agent missing the required *ClusterRole* in some environments.
+
+These updates further improve CloudPilot AI’s overall reliability and user experience. For questions or support, [join our Slack community](https://inviter.co/cloudpilot-ai-community)
+
+Stay tuned for more updates! 🚀
