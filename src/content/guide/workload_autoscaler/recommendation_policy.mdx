@@ -11,6 +11,10 @@ This document explains the meaning and valid range of each field in the `Recomme
 
 > **Note:** For all containers, if the recommended values are below the minimums, the system automatically raises them to: CPU `20m` and Memory `20Mi`. This ensures that resource requests never fall below safe operational thresholds.
 
+Once you’ve finished configuring the settings, you can view the simulation results in the **Simulation** section. It shows the expected changes in the recommended values and the actual usage. Whenever you modify any configuration item, a new simulation will be generated.
+
+![simulation](./img/recommendation_policy/simulation.png)
+
 ## Strategy Type*
 
 `StrategyType` defines the type of recommendation strategy. Currently, we only provide the `Percentile` strategy type.

@@ -79,16 +79,17 @@ For example:
 
 ![update_schedule](./img/autoscaling_policy/update_schedule.png)
 
-| Field      | Allowed Values / Format                        | Description                                                                                                             |
-|------------|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| `Name`     | Any non-empty string                           | Human-readable name of this schedule item.                                                                              |
-| `Schedule` | Cron expression (e.g., `0 2 * * *`)            | Start time defined by a cron schedule. Must follow standard cron syntax. Must be **provided together with** `duration`. |
-| `Duration` | Go/K8s duration string (e.g., `30m`, `1h`)     | Length of time the `mode` remains active after `schedule` triggers. Must be **provided together with** `schedule`.      |
-| `Mode`     | `OnCreate` \| `ReCreate` \| `InPlace` \| `Off` | Update behavior to apply when this item is active.                                                                      |
+| Field             | Allowed Values / Format                        | Description                                                                                                                             |
+|-------------------|------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| `Name`            | Any non-empty string                           | Human-readable name of this schedule item.                                                                                              |
+| `Cron Expression` | Cron expression (e.g., `0 2 * * *`)            | Start time defined by a cron schedule. Must follow standard cron syntax. Must be **provided together with** `Duration`.                 |
+| `Duration`        | Go/K8s duration string (e.g., `30m`, `1h`)     | Length of time the `Update Mode` remains active after `Cron Expression` triggers. Must be **provided together with** `Cron Expression`. |
+| `Update Mode`     | `OnCreate` \| `ReCreate` \| `InPlace` \| `Off` | Update behavior to apply when this item is active.                                                                                      |
+| `Timezone`        | IANA Time Zone name                            | Time zone for interpreting the `Cron Expression` field. Defaults to `UTC` if not specified.                                             |
 
-**Constraint:** `schedule` and `duration` are **jointly optional** — either **both present** (time-windowed rule) or **both absent** (always applicable rule with the specified `mode`).
+**Constraint:** `Cron Expression` and `Duration` are **jointly optional** — either **both present** (time-windowed rule) or **both absent** (always applicable rule with the specified `mode`).
 
-You can visit [here](https://crontab.cronhub.io/) to refer to how the Cron syntax of the `Schedule` field works.
+You can visit [here](https://crontab.cronhub.io/) to refer to how the Cron syntax of the `Cron Expression` field works.
 
 ### UpdateMode
 
@@ -107,7 +108,7 @@ For `ReCreate` operations, when attempting to evict a **single-replica** Deploym
 
 ## Update Resources*
 
-![update_resource](./img/autoscaling_policy/update_resource.png)
+![update_resources](./img/autoscaling_policy/update_resources.png)
 
 **UpdateResources** defines which resources should be managed by the Workload Autoscaler.
 Available resources: `CPU` / `Memory`.
