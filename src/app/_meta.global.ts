@@ -19,8 +19,7 @@ export default {
           getting_started: {},
           terraform: {},
           installation_environment: {},
-          deploying_with_existing_user: {},
-          get_apikeys: {}
+          deploying_with_existing_user: {}
         }
       },
       rebalance_configuration: {
@@ -53,7 +52,8 @@ export default {
           aws_marketplace_subscription: {},
           upgrade_guide: {},
           uninstall: {},
-          poc_process: {}
+          poc_process: {},
+          get_apikeys: {}
         }
       },
       concepts: {
