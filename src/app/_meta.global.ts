@@ -38,7 +38,7 @@ export default {
           installation: {},
           autoscaling_policy: {},
           recommendation_policy: {},
-          best_practices_and_limitations: {}
+          inplace_update_mode_best_practices_and_limitations: {}
         }
       },
       security: {

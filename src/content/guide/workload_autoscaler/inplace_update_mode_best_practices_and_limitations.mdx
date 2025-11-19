@@ -1,14 +1,14 @@
 ---
-title: Best Practices and Limitations
+title: InPlace Update Mode Best Practices and Limitations
 ---
 
-# Best Practices and Limitations
+# InPlace Update Mode Best Practices and Limitations
 
 This document describes best practices for the Workload Autoscaler and the limitations of the **InPlace Update Mode**.
 
 ## InPlace Update Mode Limitations
 
-### Cluster version requirement
+### Cluster Version Requirement
 
 Your Kubernetes cluster version must be **1.33 or higher**.
 
@@ -37,7 +37,7 @@ In this case, attempts to increase the Memory limit will automatically **restart
 - If you have **manually configured** a container’s ResizePolicy for any resource, the Workload Autoscaler **will not overwrite** it. For details, see the
   [Kubernetes documentation example](https://kubernetes.io/docs/tasks/configure-pod-container/resize-container-resources/#example-1-resizing-cpu-without-restart).
 
-### Pod QoS class must not change
+### Pod QoS class restrictions
 
 A Pod’s QoS class is determined at creation time (one of **Guaranteed**, **Burstable**, or **BestEffort**). `InPlace` updates must **not** cause a change in QoS class:
 
